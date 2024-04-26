@@ -6,6 +6,7 @@
 #' for given vertical and horizontal lines.
 #'
 #' @param mae MultiAssayExperiment object containing methylation and expression matrices.
+#' @param geneRow row of expression/methylation matrix for which the frequencies will be computed
 #' @param x1,x2 Coordinates of vertical points in the X axis. Because it is expected to contain methylation values that vary between 0 and 1, the default values are 1/3 and 2/3.
 #' @param y1,y2 Coordinates of vertical points in the Y axis. Leaving them as NULL assigns them the percentiles of yVec defined by `percY1` and `percY2`.
 #' @param percY1,percY2 Values used to act as default for `y1` and `y2` when these are set to `NULL`
@@ -17,23 +18,40 @@
 #'
 #' @examples
 #' 
+#' # Methylation data 
+#' methylData = matrix(runif(50), nrow=10)
+#' colnames(methylData) <- paste0("samp", 1:ncol(methylData))
+#' rownames(methylData) <- paste0("gene", 1:nrow(methylData))
+#' # Expression data
+#' expresData = matrix(rnorm(50), nrow=10)
+#' colnames(expresData) <- paste0("samp", 1:ncol(methylData))
+#' rownames(expresData) <- paste0("gene", 1:nrow(methylData))
+#' # ColData
+#' colDat <- data.frame(sampleID=colnames(methylData), 
+#'                      name=letters[1:ncol(methylData)])
+#'                      
+#' rownames(colDat)<- colDat$sampleID
 #' mae <- MultiAssayExperiment::MultiAssayExperiment(
-#'   experiments = list(methylation = matrix(runif(1000), nrow=100), 
-#'   expression = matrix(rnorm(1000), nrow=100))
+#' experiments = list(methylation = methylData,
+#'   expression = expresData),
+#'   colData =colDat
 #' )
-#' x1 <- 1/3
+#' geneRow <- 1
+#' x1 <- 1/3 
 #' x2 <- 2/3
 #' y1 <- NULL
 #' y2 <- NULL
 #' percY1 <- 1/3
 #' percY2 <- 2/3
-#' calcFreqs_mae(mae, x1, x2, y1, y2, percY1, percY2)
-#'
-calcFreqs_mae <- function (mae, x1, x2, y1=NULL, y2=NULL,
+#' 
+#' calcFreqs_mae(mae=mae, geneNum=geneRow,
+#'               x1, x2, y1, y2, percY1, percY2)
+
+calcFreqs_mae <- function (mae, geneNum, x1, x2, y1=NULL, y2=NULL,
                        percY1=1/3, percY2=2/3)
 {
-  xMet <- as.numeric(assay(mae, "methylation"))
-  yExp <- as.numeric(assay(mae, "expression"))
+  xMet <- assay(mae, "methylation")[geneNum,]
+  yExp <- assay(mae, "expression")[geneNum,]
   freqsMat <- matrix(0, nrow=3, ncol=3)
   xVals <- c(x1, x2)
   minExp <- min(yExp)

@@ -4,7 +4,16 @@
 \alias{calcFreqs_mae}
 \title{calcFreqs_mae}
 \usage{
-calcFreqs_mae(mae, x1, x2, y1 = NULL, y2 = NULL, percY1 = 1/3, percY2 = 2/3)
+calcFreqs_mae(
+  mae,
+  geneNum,
+  x1,
+  x2,
+  y1 = NULL,
+  y2 = NULL,
+  percY1 = 1/3,
+  percY2 = 2/3
+)
 }
 \arguments{
 \item{mae}{MultiAssayExperiment object containing methylation and expression matrices.}
@@ -14,29 +23,48 @@ calcFreqs_mae(mae, x1, x2, y1 = NULL, y2 = NULL, percY1 = 1/3, percY2 = 2/3)
 \item{y1, y2}{Coordinates of vertical points in the Y axis. Leaving them as NULL assigns them the percentiles of yVec defined by `percY1` and `percY2`.}
 
 \item{percY1, percY2}{Values used to act as default for `y1` and `y2` when these are set to `NULL`}
+
+\item{geneRow}{row of expression/methylation matrix for which the frequencies will be computed}
 }
 \value{
 a matrix with calculated frequencies
 }
 \description{
-\code{calcFreqs_mae} Given a MultiAssayExperiment object with methylation and expression matrices, this function overimposes a grid on the scatterplot defined by YMet~Xmet
-#' and returns a 3X3 matrix of counts with the number of points in each cell of the grid
-#' for given vertical and horizontal lines.
+\code{calcFreqs_mae} Given a MultiAssayExperiment object with methylation and expression matrices, 
+this function overimposes a grid on the scatterplot defined by YMet~Xmet layers
+and returns a 3X3 matrix of counts with the number of points in each cell of the grid
+for given vertical and horizontal lines.
 }
 \examples{
 
+# Methylation data 
+methylData = matrix(runif(50), nrow=10)
+colnames(methylData) <- paste0("samp", 1:ncol(methylData))
+rownames(methylData) <- paste0("gene", 1:nrow(methylData))
+# Expression data
+expresData = matrix(rnorm(50), nrow=10)
+colnames(expresData) <- paste0("samp", 1:ncol(methylData))
+rownames(expresData) <- paste0("gene", 1:nrow(methylData))
+# ColData
+colDat <- data.frame(sampleID=colnames(methylData), 
+                     name=letters[1:ncol(methylData)])
+                     
+rownames(colDat)<- colDat$sampleID
 mae <- MultiAssayExperiment::MultiAssayExperiment(
-  experiments = list(methylation = matrix(runif(1000), nrow=100), 
-  expression = matrix(rnorm(1000), nrow=100))
+experiments = list(methylation = methylData,
+  expression = expresData),
+  colData =colDat
 )
-x1 <- 1/3
+geneRow <- 1
+x1 <- 1/3 
 x2 <- 2/3
 y1 <- NULL
 y2 <- NULL
 percY1 <- 1/3
 percY2 <- 2/3
-calcFreqs_mae(mae, x1, x2, y1, y2, percY1, percY2)
 
+calcFreqs_mae(mae=mae, geneNum=geneRow,
+              x1, x2, y1, y2, percY1, percY2)
 }
 \keyword{calculation}
 \keyword{frequencies}
