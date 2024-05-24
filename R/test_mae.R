@@ -1,4 +1,4 @@
-library(SummarizedExperiment)
+library(MultiAssayExperiment)
 
 # Methylation data
 
@@ -25,3 +25,5 @@ mae <- MultiAssayExperiment::MultiAssayExperiment(
 mae@colData
 mae@ExperimentList
 mae@sampleMap
+prod(names(mae@ExperimentList) == c("methylation" ,"expression" ))==1
+
