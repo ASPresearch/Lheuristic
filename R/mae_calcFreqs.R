@@ -1,12 +1,12 @@
-#' calcFreqs_mae
+#' mae_calcFreqs
 #'
-#' \code{calcFreqs_mae} Given a MultiAssayExperiment object with methylation and expression matrices, 
+#' \code{mae_calcFreqs} Given a MultiAssayExperiment object with methylation and expression matrices, 
 #' this function overimposes a grid on the scatterplot defined by YMet~Xmet layers
 #' and returns a 3X3 matrix of counts with the number of points in each cell of the grid
 #' for given vertical and horizontal lines.
 #'
 #' @param mae MultiAssayExperiment object containing methylation and expression matrices.
-#' @param geneRow row of expression/methylation matrix for which the frequencies will be computed
+#' @param geneNum row of expression/methylation matrix for which the frequencies will be computed
 #' @param x1,x2 Coordinates of vertical points in the X axis. Because it is expected to contain methylation values that vary between 0 and 1, the default values are 1/3 and 2/3.
 #' @param y1,y2 Coordinates of vertical points in the Y axis. Leaving them as NULL assigns them the percentiles of yVec defined by `percY1` and `percY2`.
 #' @param percY1,percY2 Values used to act as default for `y1` and `y2` when these are set to `NULL`
@@ -14,7 +14,7 @@
 #' @return a matrix with calculated frequencies
 #'
 #' @keywords calculation frequencies
-#' @export calcFreqs_mae
+#' @export mae_calcFreqs
 #'
 #' @examples
 #' 
@@ -44,14 +44,14 @@
 #' percY1 <- 1/3
 #' percY2 <- 2/3
 #' 
-#' calcFreqs_mae(mae=mae, geneNum=geneRow,
+#' mae_calcFreqs(mae=mae, geneNum=geneRow,
 #'               x1, x2, y1, y2, percY1, percY2)
 
-calcFreqs_mae <- function (mae, geneNum, x1, x2, y1=NULL, y2=NULL,
+mae_calcFreqs <- function (mae, geneNum, x1, x2, y1=NULL, y2=NULL,
                        percY1=1/3, percY2=2/3)
 {
-  xMet <- assay(mae, "methylation")[geneNum,]
-  yExp <- assay(mae, "expression")[geneNum,]
+  xMet <- mae@ExperimentList[["methylation"]][geneNum,] # assay(mae, "methylation")[geneNum,]
+  yExp <- mae@ExperimentList[["expression"]][geneNum,] # assay(mae, "expression")[geneNum,]
   freqsMat <- matrix(0, nrow=3, ncol=3)
   xVals <- c(x1, x2)
   minExp <- min(yExp)

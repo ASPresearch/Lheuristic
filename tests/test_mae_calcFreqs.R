@@ -27,7 +27,7 @@ y2 <- NULL
 percY1 <- 1/3
 percY2 <- 2/3
  
-calcFreqs_mae(mae=mae, geneNum=geneRow,
+mae_calcFreqs(mae=mae, geneNum=geneRow,
               x1, x2, y1, y2, percY1, percY2)
 
 calcFreqs(xMet=methylData[1,], yExp=expresData[1,], 
