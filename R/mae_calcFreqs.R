@@ -50,8 +50,10 @@
 mae_calcFreqs <- function (mae, geneNum, x1, x2, y1=NULL, y2=NULL,
                        percY1=1/3, percY2=2/3)
 {
-  xMet <- mae@ExperimentList[["methylation"]][geneNum,] # assay(mae, "methylation")[geneNum,]
-  yExp <- mae@ExperimentList[["expression"]][geneNum,] # assay(mae, "expression")[geneNum,]
+  if (prod(names(mae@ExperimentList) == c("methylation" ,"expression" ))!=1)
+    stop("Error: Names of layers must be 'methylation' and 'expression'")
+  xMet <- assay(mae, "methylation")[geneNum,]
+  yExp <- assay(mae, "expression")[geneNum,]
   freqsMat <- matrix(0, nrow=3, ncol=3)
   xVals <- c(x1, x2)
   minExp <- min(yExp)

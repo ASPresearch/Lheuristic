@@ -1,4 +1,4 @@
-library(SummarizedExperiment)
+library(MultiAssayExperiment)
 
 # Methylation data
 methylData = matrix(runif(50), nrow=10)
@@ -29,8 +29,7 @@ percY2 <- 2/3
  
 mae_calcFreqs(mae=mae, geneNum=geneRow,
               x1, x2, y1, y2, percY1, percY2)
-
-calcFreqs(xMet=methylData[1,], yExp=expresData[1,], 
-          x1, x2, y1=NULL, y2=NULL,
-          percY1=1/3, percY2=2/3)
- 
+mae@colData
+mae@ExperimentList
+mae@sampleMap
+prod(names(mae@ExperimentList) == c("methylation" ,"expression" ))==1
