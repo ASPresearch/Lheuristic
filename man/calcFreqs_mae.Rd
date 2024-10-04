@@ -18,13 +18,13 @@ calcFreqs_mae(
 \arguments{
 \item{mae}{MultiAssayExperiment object containing methylation and expression matrices.}
 
+\item{geneNum}{row of expression/methylation matrix for which the frequencies will be computed}
+
 \item{x1, x2}{Coordinates of vertical points in the X axis. Because it is expected to contain methylation values that vary between 0 and 1, the default values are 1/3 and 2/3.}
 
 \item{y1, y2}{Coordinates of vertical points in the Y axis. Leaving them as NULL assigns them the percentiles of yVec defined by `percY1` and `percY2`.}
 
 \item{percY1, percY2}{Values used to act as default for `y1` and `y2` when these are set to `NULL`}
-
-\item{geneRow}{row of expression/methylation matrix for which the frequencies will be computed}
 }
 \value{
 a matrix with calculated frequencies

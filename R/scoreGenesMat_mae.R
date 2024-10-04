@@ -32,8 +32,8 @@
 #'   expression = expresData),
 #'   colData =colDat
 #' )
-#' sampleSize <- dim(mets)[2]
-#' numGenes <-   dim(mets)[1]
+#' sampleSize <- dim(MultiassayExperiment::assay(mae))[2] # dim(methylData)[2] 
+#' numGenes <-   dim(MultiassayExperiment::assay(mae))[1] # dim(methylData)[1]
 #' reqPercentages <- matrix (c(3, 20, 5, 5, 40, 20, 4, 1, 2), nrow=3, byrow=TRUE)
 #' (theWeightMifL=matrix (c(2,-2,-sampleSize/5,1,0,-2,1,1,2), nrow=3, byrow=TRUE))
 #' (theWeightMifNonL=matrix (c(0,-2,-sampleSize/5,0,0,-2,0,0,0), nrow=3, byrow=TRUE))

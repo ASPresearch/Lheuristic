@@ -12,7 +12,8 @@ Description: The Lheuristic package identifies scatterpots that
     an expression and a methylation array. The package uses two
     different methods to detect expression and methyaltion L-
     shapped scatterplots. The parameters can be changed to
-    detect other scatterplot patterns. 
+    detect other scatterplot patterns.
+License: MIT + file LICENSE
 Depends: R (>= 4.3.0)
 biocViews: DNAMethylation, StatisticalMethod, MethylationArray
 Imports:
@@ -28,8 +29,7 @@ Suggests:
     rmarkdown,
     testthat (>= 3.0.0)
 VignetteBuilder: knitr
-License: Artistic-2.0
 Encoding: UTF-8
 LazyData: false
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Config/testthat/edition: 3
