@@ -27,6 +27,7 @@
 #' yVec <- mets[1,]
 # titolF <- falseGene1
 # messageTitle(paste("Cell counts for gene",falseGene1))
+
 # calcFreqs(xMet=xVec, yExp=yVec, x1=1/3, x2=2/3, y1=NULL, y2=NULL, percY1=1/3, percY2=2/3)
 
 #'

@@ -1,6 +1,6 @@
-#' calcFreqs_mae
+#' mae_calcFreqs
 #'
-#' \code{calcFreqs_mae} Given a MultiAssayExperiment object with methylation and expression matrices, 
+#' \code{mae_calcFreqs} Given a MultiAssayExperiment object with methylation and expression matrices, 
 #' this function overimposes a grid on the scatterplot defined by YMet~Xmet layers
 #' and returns a 3X3 matrix of counts with the number of points in each cell of the grid
 #' for given vertical and horizontal lines.
@@ -14,7 +14,7 @@
 #' @return a matrix with calculated frequencies
 #'
 #' @keywords calculation frequencies
-#' @export calcFreqs_mae
+#' @export mae_calcFreqs
 #'
 #' @examples
 #' 
@@ -44,10 +44,10 @@
 #' percY1 <- 1/3
 #' percY2 <- 2/3
 #' 
-#' calcFreqs_mae(mae=mae, geneNum=geneRow,
+#' mae_calcFreqs(mae=mae, geneNum=geneRow,
 #'               x1, x2, y1, y2, percY1, percY2)
 
-calcFreqs_mae <- function (mae, geneNum, x1, x2, y1=NULL, y2=NULL,
+mae_calcFreqs <- function (mae, geneNum, x1, x2, y1=NULL, y2=NULL,
                        percY1=1/3, percY2=2/3)
 {
   if (prod(names(mae@ExperimentList) == c("methylation" ,"expression" ))!=1)

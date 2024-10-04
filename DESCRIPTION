@@ -23,6 +23,7 @@ Imports:
     grDevices,
     graphics,
     utils,
+    SummarizedExperiment,
     MultiAssayExperiment
 Suggests: 
     knitr,

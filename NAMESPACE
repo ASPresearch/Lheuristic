@@ -2,9 +2,10 @@
 
 export(binScore)
 export(calcFreqs)
-export(calcFreqs_mae)
 export(checkPairing)
 export(correlationSelection)
+export(mae_calcFreqs)
+export(mae_scoreGenesMat)
 export(matCorrs)
 export(messageTitle)
 export(numScore)
