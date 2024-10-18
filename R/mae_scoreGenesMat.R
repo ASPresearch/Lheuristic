@@ -1,6 +1,6 @@
 #' mae_scoreGenesMat
 #'
-#' \code{scoreGenesMat} scores scatterplots using a binary and a numeric schemes on a row-wise basis.
+#' \code{mae_scoreGenesMat} scores scatterplots using a binary and a numeric schemes on a row-wise basis.
 #'
 #' @param mae MultiAssayExperiment object containing methylation and expression matrices.
 #' @param aReqPercentsMat Matrix of minimum maximum percentage of counts to have in a given cell
@@ -56,8 +56,10 @@ mae_scoreGenesMat <- function(mae,
   if(sum(aReqPercentsMat)!=100) 
     stop("Error: Percentages must add up to 100")
   #stopifnot("Percentages must add up to 100"=sum(aReqPercentsMat)==100)
-  mets <- assay(mae, "methylation")
-  expres <- assay(mae, "expression")
+  if (prod(names(mae@ExperimentList) == c("methylation" ,"expression" ))!=1)
+    stop("Error: Names of layers must be 'methylation' and 'expression'")
+  mets <- mae@ExperimentList[["methylation"]]
+  expres <- mae@ExperimentList[["expression"]]
   N <- ncol(mets)
   Ngenes <-nrow(mets)
   scores <- data.frame(logicSc=rep(FALSE, Ngenes), numericSc=rep(0,Ngenes))

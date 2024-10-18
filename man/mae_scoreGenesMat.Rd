@@ -36,7 +36,7 @@ mae_scoreGenesMat(
 A data frame with two columns: "logicSc" (a logical score indicating whether the gene is considered "active") and "numericSc" (a numerical score).
 }
 \description{
-\code{scoreGenesMat} scores scatterplots using a binary and a numeric schemes on a row-wise basis.
+\code{mae_scoreGenesMat} scores scatterplots using a binary and a numeric schemes on a row-wise basis.
 }
 \examples{
 \donttest{
