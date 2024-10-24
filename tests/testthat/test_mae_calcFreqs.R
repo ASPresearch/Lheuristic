@@ -29,7 +29,7 @@ percY2 <- 2/3
  
 mae_calcFreqs(mae=mae, geneNum=geneRow,
               x1, x2, y1, y2, percY1, percY2)
-mae@colData
-mae@ExperimentList
-mae@sampleMap
-prod(names(mae@ExperimentList) == c("methylation" ,"expression" ))==1
+colData(mae)
+experiments(mae)
+sampleMap(mae)
+prod(names(experiments(mae)) == c("methylation" ,"expression" ))==1
