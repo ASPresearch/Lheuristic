@@ -1,4 +1,4 @@
-library(SummarizedExperiment)
+library(MultiAssayExperiment)
 
 # Methylation data
 

@@ -58,8 +58,8 @@ mae_scoreGenesMat <- function(mae,
   #stopifnot("Percentages must add up to 100"=sum(aReqPercentsMat)==100)
   if (prod(names(mae@ExperimentList) == c("methylation" ,"expression" ))!=1)
     stop("Error: Names of layers must be 'methylation' and 'expression'")
-  mets <- mae@ExperimentList[["methylation"]]
-  expres <- mae@ExperimentList[["expression"]]
+  mets <- MultiAssayExperiment::assay(mae, "methylation")
+  expres <- MultiAssayExperiment::assay(mae, "expression")
   N <- ncol(mets)
   Ngenes <-nrow(mets)
   scores <- data.frame(logicSc=rep(FALSE, Ngenes), numericSc=rep(0,Ngenes))
@@ -67,11 +67,11 @@ mae_scoreGenesMat <- function(mae,
   minmaxCounts <- toReqMat(N, aReqPercentMat=aReqPercentsMat)
   indexes <- seq(from=1, to=Ngenes, by=1)
   for (gene in indexes){
-    theGene <- rownames(expres)[gene]
-    xVec<- mets[theGene,]
-    yVec<- expres[theGene,]
-    geneGrid <- calcFreqs(xMet=xVec, yExp=yVec, x1=x1, x2=x2,
-                          y1=y1, y2=y2, percY1=percY1, percY2=percY2)
+    geneNum <- rownames(expres)[gene]
+    xMet <- mets[geneNum,]
+    yExp <- expres[geneNum,]
+    geneGrid <- mae_calcFreqs(mae, geneNum, x1, x2, y1=NULL, y2=NULL,
+                              percY1=1/3, percY2=2/3)
     binSc <- binScore(geneGrid, minmaxCounts)
     scores[gene, "logicSc"] <- binSc
     numSc <- numScore (geneGrid, LShaped=binSc,

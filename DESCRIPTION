@@ -14,7 +14,7 @@ Description: The Lheuristic package identifies scatterpots that
     shapped scatterplots. The parameters can be changed to
     detect other scatterplot patterns.
 License: MIT + file LICENSE
-Depends: R (>= 4.3.0)
+Depends: R (>= 4.4.0)
 biocViews: DNAMethylation, StatisticalMethod, MethylationArray
 Imports:
     Hmisc,
@@ -28,8 +28,10 @@ Suggests:
     knitr,
     rmarkdown,
     testthat (>= 3.0.0)
+URL: https://github.com/ASPresearch/Lheuristic
+BugReports: https://github.com/ASPresearch/Lheuristic/issues
 VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: false
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Config/testthat/edition: 3
