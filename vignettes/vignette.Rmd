@@ -76,10 +76,13 @@ ifelse(checkPairing(TCGAexp, TCGAmet),
 
 We have two aligned datasets, so it seems reasonable to manage them using an appropriate data structure such as `MultiAssayExperiment` as described  [this tutorial](https://www.bioconductor.org/packages/devel/bioc/vignettes/MultiAssayExperiment/inst/doc/MultiAssayExperiment.html).
 
+**Labeling the experiments as *methylation* and *expression* in that particular order and name is essential for the proper functioning and use of the package functions.**
+
 ```{r}
+
 library(MultiAssayExperiment)
-doubleExp <- list("Exprs"  = TCGAexp, 
-                  "Metil" = TCGAmet)
+doubleExp <- list("methylation" = TCGAmet,
+                  "expression"  = TCGAexp)
 mae1 <- MultiAssayExperiment(experiments=doubleExp)
 ```
 
@@ -193,12 +196,12 @@ sum(reqPercentages)
 (theWeightMifL=matrix (c(2,-2,-sampleSize/5,1,0,-2,1,1,2), nrow=3, byrow=TRUE))
 (theWeightMifNonL=matrix (c(0,-2,-sampleSize/5,0,0,-2,0,0,0), nrow=3, byrow=TRUE))
    
-heur <- scoreGenesMat (mets=mae1[[2]],
-							         expres=mae1[[1]],
+heur <- mae_scoreGenesMat (mae1,
                             aReqPercentsMat=reqPercentages,
                             aWeightMifL=theWeightMifL,
                             aWeightMifNonL=theWeightMifNonL )
-  message("Number of scatterplots scored  : ", dim(heur)[1],"\n")
+  
+message("Number of scatterplots scored  : ", dim(heur)[1],"\n")
   message("Number of L-shape scatterplots : ", sum(heur[,1]),"\n")
   
 heurL <- heur[heur$logicSc,]
