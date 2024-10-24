@@ -189,17 +189,19 @@ sampleSize <- dim(mae1[[2]])[2]
 numGenes <-   dim(mae1[[2]])[1]
 
 # 
-reqPercentages <- matrix (c(2, 20, 5, 5, 40, 20, 3, 3, 2), nrow=3, byrow=TRUE)
+reqPercentages <- matrix(c(2, 20, 5, 5, 40, 20, 3, 3, 2), nrow=3, byrow=TRUE)
 sum(reqPercentages)
 (maxminCounts <- toReqMat(sampleSize, reqPercentages))
 
-(theWeightMifL=matrix (c(2,-2,-sampleSize/5,1,0,-2,1,1,2), nrow=3, byrow=TRUE))
-(theWeightMifNonL=matrix (c(0,-2,-sampleSize/5,0,0,-2,0,0,0), nrow=3, byrow=TRUE))
+(theWeightMifL= matrix(c(2,-2,-sampleSize/5,1,0,-2,1,1,2), 
+                        nrow=3, byrow=TRUE))
+(theWeightMifNonL= matrix(c(0,-2,-sampleSize/5,0,0,-2,0,0,0), 
+                           nrow=3, byrow=TRUE))
    
-heur <- mae_scoreGenesMat (mae1,
-                            aReqPercentsMat=reqPercentages,
-                            aWeightMifL=theWeightMifL,
-                            aWeightMifNonL=theWeightMifNonL )
+heur <- mae_scoreGenesMat(mae1,
+                          aReqPercentsMat=reqPercentages,
+                          aWeightMifL=theWeightMifL,
+                          aWeightMifNonL=theWeightMifNonL )
   
 message("Number of scatterplots scored  : ", dim(heur)[1],"\n")
   message("Number of L-shape scatterplots : ", sum(heur[,1]),"\n")
@@ -250,9 +252,9 @@ We may decide to choose the genes that have been selected by 2 or more methods, 
 ```{r}
 inCommonL <- intersect(rownames(correlationL),
                        rownames(heurL))
-inCorrelationLOnly<- setdiff(rownames(correlationL),
+inCorrelationLOnly <- setdiff(rownames(correlationL),
                              inCommonL)
-inheurLLOnly<- setdiff(rownames(heurL),
+inheurLLOnly <- setdiff(rownames(heurL),
                              inCommonL)
 ```
 

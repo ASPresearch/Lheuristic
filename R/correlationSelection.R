@@ -22,7 +22,8 @@
 #' (X <- round(matrix (rnorm(30)*10, ncol=6),1))
 #' (Y <- round(X + matrix (rnorm(30)*10, ncol=6),1))
 #' (rownames(X)=rownames(Y)=letters[1:nrow(X)])
-#' correlationSelection(X, Y, pValCutoff=0.25, rCutoff=0.1, type="Spearman", sortByCorrs=TRUE)
+#' correlationSelection(X, Y, pValCutoff=0.25, 
+#' rCutoff=0.1, type="Spearman", sortByCorrs=TRUE)
 #' 
 #' 
 correlationSelection <- function (X, Y, type="Spearman",
@@ -32,16 +33,21 @@ correlationSelection <- function (X, Y, type="Spearman",
   if (type=="Spearman"){
     selected <- corsMat[,c("r (Sp)", "p (Sp)", "adj.Spear.Pval", "distCor")]
     if(adj){
-      lShaped <-(selected[,"r (Sp)"]< rCutoff) & (selected[,"adj.Spear.Pval"] < pValCutoff)
+      lShaped <-(selected[,"r (Sp)"]< rCutoff) & 
+        (selected[,"adj.Spear.Pval"] < pValCutoff)
     }else{
-      lShaped <-(selected[,"r (Sp)"]< rCutoff) & (selected[,"p (Sp)"] < pValCutoff)
+      lShaped <-(selected[,"r (Sp)"]< rCutoff) & 
+        (selected[,"p (Sp)"] < pValCutoff)
     }
   }else{
-    selected <- corsMat[,c("r (Pear)", "p (Pear)", "adj.Pear.Pval", "distCor")]
+    selected <- corsMat[,c("r (Pear)", "p (Pear)", 
+                           "adj.Pear.Pval", "distCor")]
     if(adj){
-      lShaped <-(selected[,"r (Pear)"]< rCutoff) & (selected[,"adj.Pear.Pval"] < pValCutoff)
+      lShaped <-(selected[,"r (Pear)"]< rCutoff) & 
+        (selected[,"adj.Pear.Pval"] < pValCutoff)
     }else{
-      lShaped <-(selected[,"r (Pear)"]< rCutoff) & (selected[,"p (Pe)"] < pValCutoff)
+      lShaped <-(selected[,"r (Pear)"]< rCutoff) & 
+        (selected[,"p (Pe)"] < pValCutoff)
     }
   }
   selected2 <- data.frame (selected, lShaped)

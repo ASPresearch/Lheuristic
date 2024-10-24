@@ -43,7 +43,8 @@ plotGenesMat <- function(mets, expres, fileName = NULL, text4Title=NULL,
     if (is.null(logicSc)){
       text4Title<- rownames(expres)
     }else{
-      text4Title<- paste(rownames(expres), "\n L-shaped = ", logicSc, sep = " ") #text4Title<- rownames(expres)
+      text4Title<- paste(rownames(expres), "\n L-shaped = ", 
+                         logicSc, sep = " ") #text4Title<- rownames(expres)
     }
   }
   #  opt<-par(mfrow=c(2,2))
@@ -51,7 +52,8 @@ plotGenesMat <- function(mets, expres, fileName = NULL, text4Title=NULL,
     xVec<- as.numeric(mets[gene,])
     yVec<- as.numeric(expres[gene,])
     plotGeneSel(xMet=xVec, yExp=yVec, titleText=text4Title[gene],
-               x1=x1, x2=x2, percY1=percY1, percY2=percY2, plotGrid=plotGrid) #x1=1/3, x2=2/3, plotGrid=plotGrid)
+               x1=x1, x2=x2, percY1=percY1, percY2=percY2, 
+               plotGrid=plotGrid) #x1=1/3, x2=2/3, plotGrid=plotGrid)
   }
   #  par(opt)
   if (!is.null(fileName))

@@ -23,8 +23,10 @@ by setting threshold values.
 }
 \examples{
 # Generate some example data
-aGrid <- matrix(c(20, 3, 0, 10, 2, 2, 20, 10, 20), nrow = 3, ncol = 3, byrow = TRUE)
-aReq <- matrix(c(15, 5, 0, 0, 5, 5, 10, 10, 15), nrow = 3, ncol = 3, byrow = TRUE)
+aGrid <- matrix(c(20, 3, 0, 10, 2, 2, 20, 10, 20), 
+nrow = 3, ncol = 3, byrow = TRUE)
+aReq <- matrix(c(15, 5, 0, 0, 5, 5, 10, 10, 15), 
+nrow = 3, ncol = 3, byrow = TRUE)
 
 # Calculate the bin score
 binScore(aGrid, aReq)

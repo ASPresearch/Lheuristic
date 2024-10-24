@@ -50,8 +50,8 @@
 mae_calcFreqs <- function (mae, geneNum, x1, x2, y1=NULL, y2=NULL,
                        percY1=1/3, percY2=2/3)
 {
-  if (prod(names(mae@ExperimentList) == c("methylation" ,"expression" ))!=1)
-    stop("Error: Names of layers must be 'methylation' and 'expression'")
+  # if (prod(names(mae@ExperimentList) == c("methylation" ,"expression" ))!=1)
+  #   stop("Error: Names of layers must be 'methylation' and 'expression'")
   mets <- MultiAssayExperiment::assay(mae, "methylation")
   expres <- MultiAssayExperiment::assay(mae, "expression")
   xMet <- mets[geneNum,] # assay(mae, "methylation")[geneNum,]

@@ -27,7 +27,8 @@
 #' plotGeneByName (gene="Gene40", mets=mets, expresmatrix=expres)
 #' 
 #'
-plotGeneByName <- function(geneName, mets, expresmatrix, filename = NULL, text4Title=NULL,
+plotGeneByName <- function(geneName, mets, expresmatrix, 
+                           filename = NULL, text4Title=NULL,
                            plotGrid=TRUE, figs=c(2,2)){
   if (!is.null(filename))
     grDevices::pdf(filename)

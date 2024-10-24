@@ -59,10 +59,13 @@ experiments = list(methylation = methylData,
   expression = expresData),
   colData =colDat
 )
-sampleSize <- ncol(experiments(mae)[[1]])
-reqPercentages <- matrix (c(3, 20, 5, 5, 40, 20, 4, 1, 2), nrow=3, byrow=TRUE)
-(theWeightMifL=matrix (c(2,-2,-sampleSize/5,1,0,-2,1,1,2), nrow=3, byrow=TRUE))
-(theWeightMifNonL=matrix (c(0,-2,-sampleSize/5,0,0,-2,0,0,0), nrow=3, byrow=TRUE))
+sampleSize <- ncol(MultiAssayExperiment::experiments(mae)[[1]])
+reqPercentages <- matrix (c(3, 20, 5, 5, 40, 20, 4, 1, 2), 
+nrow=3, byrow=TRUE)
+(theWeightMifL=matrix (c(2,-2,-sampleSize/5,1,0,-2,1,1,2), 
+nrow=3, byrow=TRUE))
+(theWeightMifNonL=matrix (c(0,-2,-sampleSize/5,0,0,-2,0,0,0), 
+nrow=3, byrow=TRUE))
 mae_scoreGenesMat (mae, 
              x1=1/3, x2=2/3,
              y1=NULL, y2=NULL, percY1=1/3, percY2=2/3,

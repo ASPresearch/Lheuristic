@@ -11,7 +11,8 @@ distCorrs <- function (x, y){
 }
 
 matDistCorr <- function (X, Y){
-  if ((nrow(X)!=nrow(Y))||(ncol(X)!=ncol(Y))) stop('matrices dimensions do not match')
+  if ((nrow(X)!= nrow(Y))||(ncol(X)!= ncol(Y))) 
+    stop('matrices dimensions do not match')
   distCorrsList<- matrix(NA, nrow=nrow(X), ncol=1)
   colnames(distCorrsList) <- c("DistCor")
   for (i in seq_len(nrow(X))){
@@ -35,15 +36,21 @@ sort1 <- function (X, col,DEC=TRUE, ...){
 }
 
 matAllCorrs  <- function (X, Y, sortByCorrs = FALSE){
-  if ((nrow(X)!=nrow(Y))||(ncol(X)!=ncol(Y))) stop('matrices dimensions do not match')
+  if ((nrow(X)!= nrow(Y))||(ncol(X)!=ncol(Y))) 
+    stop('matrices dimensions do not match')
   corrsList<- matrix(NA, nrow=nrow(X), ncol=5)
-  colnames(corrsList) <- c("r (Sp)", "r (Pear)", "distCor", "p (Sp)",  "p (Pear)")
+  colnames(corrsList) <- c("r (Sp)", "r (Pear)", 
+                           "distCor", "p (Sp)",  "p (Pear)")
   for (i in seq_len(nrow(X))){
     corrs<- allCorrs(X[i,],Y[i,])
     corrsList[i,] <- corrs
   }
-  corrsList<- cbind(corrsList, adj.Spear.Pval= p.adjust(corrsList[,"p (Sp)"],"fdr"))
-  corrsList<- cbind(corrsList, adj.Pear.Pval = p.adjust(corrsList[,"p (Pear)"],"fdr"))
+  corrsList<- cbind(corrsList, 
+                    adj.Spear.Pval= p.adjust(corrsList[,"p (Sp)"],
+                                             "fdr"))
+  corrsList<- cbind(corrsList, 
+                    adj.Pear.Pval = p.adjust(corrsList[,"p (Pear)"],
+                                             "fdr"))
   rownames(corrsList) <- rownames(X)
   if (sortByCorrs) corrsList <- sort1(corrsList,4, DEC=FALSE)
   return(corrsList)
@@ -69,3 +76,17 @@ countNAs <- function (X){
 }
 
 
+read2 <- function (expresFName, metFName,
+                   dataDirectory=".", sepChar=";", decChar= "."){
+  expres<- utils::read.table(file=file.path(dataDirectory, expresFName), 
+                             header=TRUE,
+                             sep=sepChar,dec=decChar, row.names = 1)
+  mets <-utils::read.table(file=file.path(dataDirectory, metFName), 
+                           header=TRUE,
+                           sep=sepChar,dec=decChar, row.names = 1)
+  if (checkPairing(expres, mets))
+    result <- list(expres,mets)
+  else
+    result <- NULL
+  return(result)
+}

@@ -18,6 +18,7 @@
 #' (m1<-checkPairing(X,Y))
 #'
 checkPairing <- function (X, Y){
-  check <- (sum(rownames(X)!=rownames(Y)) == 0) && (sum(colnames(X)!=colnames(Y)) == 0)
+  check <- (sum(rownames(X)!=rownames(Y)) == 0) &&
+    (sum(colnames(X)!=colnames(Y)) == 0)
 }
 
