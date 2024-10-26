@@ -5,17 +5,26 @@
 #'
 #' @param numPoints Number of points in a scatterplot. Used to turn the required percentages into required counts.
 #' @param aReqPercentMat Matrix of required percentages
-#' 
+#'
 #' @return a counts matrix
-#' 
+#'
 #' @export toReqMat
 #'
 #' @examples
-#' reqPercentages <- matrix (c(3, 20, 5, 5, 40, 20, 4, 1, 2), nrow=3, byrow=TRUE)
+#' reqPercentages <- matrix(
+#'     c(
+#'         3, 20, 5,
+#'         5, 40, 20,
+#'         4, 1, 2
+#'     ),
+#'     nrow = 3, byrow = TRUE
+#' )
 #' numberOfPoints <- 100
-#' reqMat <- toReqMat (numPoints=numberOfPoints, aReqPercentMat=reqPercentages)
+#' reqMat <- toReqMat(
+#'     numPoints = numberOfPoints,
+#'     aReqPercentMat = reqPercentages
+#' )
 #'
-toReqMat <- function (numPoints, aReqPercentMat){
-  return(round(aReqPercentMat*numPoints/100,0)) 
+toReqMat <- function(numPoints, aReqPercentMat) {
+    return(round(aReqPercentMat * numPoints / 100, 0))
 }
-

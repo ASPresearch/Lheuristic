@@ -19,8 +19,18 @@ a counts matrix
 a matrix of required counts to facilitate its scoring.
 }
 \examples{
-reqPercentages <- matrix (c(3, 20, 5, 5, 40, 20, 4, 1, 2), nrow=3, byrow=TRUE)
+reqPercentages <- matrix(
+    c(
+        3, 20, 5,
+        5, 40, 20,
+        4, 1, 2
+    ),
+    nrow = 3, byrow = TRUE
+)
 numberOfPoints <- 100
-reqMat <- toReqMat (numPoints=numberOfPoints, aReqPercentMat=reqPercentages)
+reqMat <- toReqMat(
+    numPoints = numberOfPoints,
+    aReqPercentMat = reqPercentages
+)
 
 }

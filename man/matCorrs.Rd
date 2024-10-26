@@ -19,12 +19,11 @@ matrix with a correlation value for each gene
 and their significance p-values for every pair of row vectors.
 }
 \examples{
-(X <- round(matrix (rnorm(30)*10, ncol=6),1)) + 1:10
-(Y <- round(X + matrix (rnorm(30)*10, ncol=6),1)) - 10:1
-(rownames(X)=rownames(Y)=letters[1:nrow(X)])
-(m1<-matCorrs(X,Y))
+(X <- round(matrix(rnorm(30) * 10, ncol = 6), 1)) + 1:10
+(Y <- round(X + matrix(rnorm(30) * 10, ncol = 6), 1)) - 10:1
+(rownames(X) <- rownames(Y) <- letters[1:nrow(X)])
+(m1 <- matCorrs(X, Y))
 matCorrs
-
 
 }
 \keyword{correlation}

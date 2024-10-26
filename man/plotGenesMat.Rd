@@ -51,11 +51,11 @@ a pdf with scatterplots for all genes
 \code{plotGenesMat} wrapper function for plotting the scatterplots associated with two matrices.
 }
 \examples{
-mets <- matrix(runif(1000), nrow=100)
-expres <- matrix(rnorm(1000), nrow=100)
+mets <- matrix(runif(1000), nrow = 100)
+expres <- matrix(rnorm(1000), nrow = 100)
 rownames(mets) <- paste0("Gene", 1:nrow(mets))
 rownames(expres) <- paste0("Gene", 1:nrow(expres))
-# plotGenesMat (mets=mets, expres=expres, fileName = "PlotAllGenes.pdf")
+# plotGenesMat (mets=mets, expres=expres, fileName = 'PlotAllGenes.pdf')
 
 }
 \keyword{gene}

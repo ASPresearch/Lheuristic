@@ -38,12 +38,13 @@ and their significance p-values  for every pair of row vectors.
 }
 \examples{
 
-(X <- round(matrix (rnorm(30)*10, ncol=6),1))
-(Y <- round(X + matrix (rnorm(30)*10, ncol=6),1))
-(rownames(X)=rownames(Y)=letters[1:nrow(X)])
-correlationSelection(X, Y, pValCutoff=0.25, 
-rCutoff=0.1, type="Spearman", sortByCorrs=TRUE)
-
+(X <- round(matrix(rnorm(30) * 10, ncol = 6), 1))
+(Y <- round(X + matrix(rnorm(30) * 10, ncol = 6), 1))
+(rownames(X) <- rownames(Y) <- letters[1:nrow(X)])
+correlationSelection(X, Y,
+    pValCutoff = 0.25,
+    rCutoff = 0.1, type = "Spearman", sortByCorrs = TRUE
+)
 
 }
 \keyword{Calculator}

@@ -7,7 +7,7 @@
 plotGeneByName(
   geneName,
   mets,
-  expresmatrix,
+  expmat,
   filename = NULL,
   text4Title = NULL,
   plotGrid = TRUE,
@@ -19,7 +19,7 @@ plotGeneByName(
 
 \item{mets}{matrix containing the methylation data of the named gene.}
 
-\item{expresmatrix}{matrix containing the expression data of the named gene.}
+\item{expmat}{matrix containing the expression data of the named gene.}
 
 \item{filename}{NULL, name of the file to store the results as pdf if a name is passed.}
 
@@ -38,12 +38,11 @@ The name of a the gene is provided jointly with the matrix and used to select th
 }
 \examples{
 # Plot gene by name based on example data
-mets <- matrix(runif(1000), nrow=100)
-expres <- matrix(rnorm(1000), nrow=100)
+mets <- matrix(runif(1000), nrow = 100)
+expres <- matrix(rnorm(1000), nrow = 100)
 rownames(mets) <- paste0("Gene", 1:nrow(mets))
 rownames(expres) <- paste0("Gene", 1:nrow(expres))
-plotGeneByName (gene="Gene40", mets=mets, expresmatrix=expres)
-
+plotGeneByName(gene = "Gene40", mets = mets, expmat = expres)
 
 }
 \keyword{gene}
