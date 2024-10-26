@@ -15,26 +15,31 @@ plotGeneByName(
 )
 }
 \arguments{
-\item{geneName}{name of the gene to be plotted.}
+\item{geneName}{The name of the gene to be plotted.}
 
-\item{mets}{matrix containing the methylation data of the named gene.}
+\item{mets}{A matrix containing the methylation data for the specified gene.}
 
-\item{expmat}{matrix containing the expression data of the named gene.}
+\item{expmat}{A matrix containing the expression data for the specified gene.}
 
-\item{filename}{NULL, name of the file to store the results as pdf if a name is passed.}
+\item{filename}{If provided, the name of the file to save the results
+as a PDF;  defaults to NULL.}
 
-\item{text4Title}{String to be used as main title for the plot. If NULL it is set to geneName}
+\item{text4Title}{A string used as the main title for the plot. Defaults to 
+`geneName` if set to NULL.}
 
-\item{plotGrid}{boolean parameter to be passed to `plotGeneSel` function}
+\item{plotGrid}{A boolean parameter indicating whether to pass
+the grid option to the `plotGeneSel` function.}
 
-\item{figs}{2-components vector defining the 2-dimensional structure of the plots that will be drawn}
+\item{figs}{A two-component vector defining the 2-dimensional structure of
+the plots to be generated.}
 }
 \value{
 a pdf with scatterplots of selected by gene name
 }
 \description{
-\code{plotGeneByName} plots points on a scatterplot with a 3x3 grid superimposed.
-The name of a the gene is provided jointly with the matrix and used to select the row to be plotted.
+\code{plotGeneByName} plots points on a scatterplot with a 3x3 grid
+superimposed. The name of a the gene is provided jointly with the matrix
+and used to select the row to be plotted.
 }
 \examples{
 # Plot gene by name based on example data

@@ -19,22 +19,28 @@ correlationSelection(
 
 \item{Y}{Second matrix. Must have the same dimensions as X.}
 
-\item{type}{specifies the correlation to choose between Spearman and Pearson. Default is Spearman.}
+\item{type}{specifies the correlation to choose between Spearman
+and Pearson. Default is Spearman.}
 
-\item{adj}{logical variable indicating if the p-value returned should be adjusted or not. Default set to TRUE, which will return an adjusted p-value.}
+\item{adj}{logical variable indicating if the p-value returned should be
+adjusted or not. Default is TRUE, it returns an adjusted p-value.}
 
-\item{pValCutoff}{the upper limit to be used for the  p-value. Default is 0.05.}
+\item{pValCutoff}{the upper limit used for the  p-value. Default is 0.05.}
 
-\item{rCutoff}{the upper limit to be used for the correlation coefficient. Default is 0, no cut off.}
+\item{rCutoff}{the upper limit used for the correlation coefficient. 
+Default is 0, no cut off.}
 
-\item{sortByCorrs}{logical; if TRUE, results will be ordered in ascending order by p-value. Default set to FALSE.}
+\item{sortByCorrs}{logical; if TRUE, results are ordered by ascending 
+p-value. Default set to FALSE.}
 }
 \value{
 dataframe with correlations selected
 }
 \description{
-\code{correlationSelection} Uses the function matCorrs; given two matrices X (m,n) , Y (m,n) this function computes Pearson and Spearman correlation coefficients
-and their significance p-values  for every pair of row vectors.
+\code{correlationSelection} Uses the function matCorrs; 
+given two matrices X (m,n), Y (m,n) this function computes 
+Pearson and Spearman correlation coefficients and their significance p-values
+for every pair of row vectors.
 }
 \examples{
 

@@ -1,16 +1,25 @@
 #' mae_scoreGenesMat
 #'
-#' \code{mae_scoreGenesMat} scores scatterplots using a binary and a numeric schemes on a row-wise basis.
-#'
-#' @param mae MultiAssayExperiment object containing methylation and expression matrices.
-#' @param aReqPercentsMat Matrix of minimum maximum percentage of counts to have in a given cell
-#' @param aWeightMifL A matrix of weights to score the previous counts if the scatterplot has been classified as L.
-#' @param aWeightMifNonL A matrix of weights to score the previous counts if the scatterplot has been classified as non-L
-#' @param x1,x2 Coordinates of vertical points in the X axis. Because it is expected to contain methylation values that vary between 0 and 1 the default values are 1/3 and 2/3.
-#' @param y1,y2 Coordinates of vertical points in the Y axis. Leaving them as NULL assigns them the percentiles of yVec defined by `percY1` and `percY2`.
-#' @param percY1,percY2 Values used to act as default for `y1`and `y2` when these are set to `NULL`
+#' \code{mae_scoreGenesMat} scores scatterplots using a binary and a numeric
+#' schemes row-wise.
+#' @param mae MultiAssayExperiment object containing methylation and expression 
+#' matrices.
+#' @param aReqPercentsMat A matrix specifying the minimum and maximum percentage
+#' counts required in each cell.
+#' @param aWeightMifL A matrix of weights applied to score counts when the
+#' scatterplot is classified as "L".
+#' @param aWeightMifNonL A matrix of weights applied to score counts when the
+#' scatterplot is classified as "non-L".
+#' @param x1,x2 Coordinates of vertical points on the X-axis. 
+#' Expected to contain methylation values ranging between 0 and 1,
+#' with default values set to 1/3 and 2/3.
+#' @param y1,y2 Coordinates of vertical points on the Y-axis. If set to NULL,
+#' they default to the percentiles of yVec as defined by `percY1` and `percY2`.
+#' @param percY1,percY2 Values used to act as default for `y1`and `y2` when
+#' these are set to `NULL`.
 #' @export mae_scoreGenesMat
-#' @return A data frame with two columns: 'logicSc' (a logical score indicating whether the gene is considered 'active') and 'numericSc' (a numerical score).
+#' @return A data frame with two columns: 'logicSc' (logical score indicating if
+#' the gene is 'active') and 'numericSc' (a numerical score).
 #'
 #' @examples
 #' # Score genes based on example data
@@ -54,10 +63,12 @@
 #'     aWeightMifL = theWeightMifL,
 #'     aWeightMifNonL = theWeightMifNonL
 #' )
-mae_scoreGenesMat <- function(mae, x1 = 1 / 3, x2 = 2 / 3, y1 = NULL, y2 = NULL, percY1 = 1 / 3,
+mae_scoreGenesMat <- function(mae, x1 = 1 / 3, x2 = 2 / 3, y1 = NULL, y2 = NULL,
+    percY1 = 1 / 3,
     percY2 = 2 / 3, aReqPercentsMat, aWeightMifL = 0.5, aWeightMifNonL = 0.25) {
     if (sum(aReqPercentsMat) != 100) {
-        stopifnot(`Percentages must add up to 100` = sum(aReqPercentsMat) == 100)
+        stopifnot(`Percentages must add up to 100` 
+            = sum(aReqPercentsMat) == 100)
     }
     stopifnot(prod(names(MultiAssayExperiment::experiments(mae)) == c(
         "methylation",
@@ -67,7 +78,8 @@ mae_scoreGenesMat <- function(mae, x1 = 1 / 3, x2 = 2 / 3, y1 = NULL, y2 = NULL,
     expres <- MultiAssayExperiment::assay(mae, "expression")
     N <- ncol(mets)
     Ngenes <- nrow(mets)
-    scores <- data.frame(logicSc = rep(FALSE, Ngenes), numericSc = rep(0, Ngenes))
+    scores <- data.frame(logicSc = rep(FALSE, Ngenes),
+        numericSc = rep(0, Ngenes))
     rownames(scores) <- rownames(mets)
     minmaxCounts <- toReqMat(N, aReqPercentMat = aReqPercentsMat)
     indexes <- seq(from = 1, to = Ngenes, by = 1)
@@ -81,7 +93,8 @@ mae_scoreGenesMat <- function(mae, x1 = 1 / 3, x2 = 2 / 3, y1 = NULL, y2 = NULL,
         )
         binSc <- binScore(geneGrid, minmaxCounts)
         scores[gene, "logicSc"] <- binSc
-        numSc <- numScore(geneGrid, LShaped = binSc, aWeightMifL = aWeightMifL, aWeightMifNonL = aWeightMifNonL)
+        numSc <- numScore(geneGrid, LShaped = binSc, aWeightMifL = aWeightMifL,
+            aWeightMifNonL = aWeightMifNonL)
         scores[gene, "numericSc"] <- numSc
     }
     return(scores)

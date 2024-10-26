@@ -1,6 +1,7 @@
 #' checkPairing
 #'
-#' \code{checkPairing} is a  function to check if two matrices have the same dimensions (same rows and columns) and same row and column names.
+#' \code{checkPairing} function to check if two matrices have the same 
+#' dimensions row and column names.
 #'
 #' @param X matrix
 #' @param Y matrix
@@ -18,6 +19,6 @@
 #' (m1 <- checkPairing(X, Y))
 #'
 checkPairing <- function(X, Y) {
-    check <- (sum(rownames(X) != rownames(Y)) == 0) && (sum(colnames(X) != colnames(Y)) ==
-        0)
+    check <- (sum(rownames(X) != rownames(Y)) == 0) &&
+                (sum(colnames(X) != colnames(Y)) == 0)
 }

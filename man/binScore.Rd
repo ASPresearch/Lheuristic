@@ -7,10 +7,10 @@
 binScore(aGrid, aReq)
 }
 \arguments{
-\item{aGrid}{A matrix of counts as computed by `calcFreqs` function}
+\item{aGrid}{A matrix of counts as computed by `calcFreqs` function.}
 
 \item{aReq}{A matrix of minimum or maximum counts to be found in each cell
-if L-shape is TRUE}
+if L-shape is TRUE.}
 }
 \value{
 a score value for each scatterplot

@@ -18,25 +18,35 @@ mae_scoreGenesMat(
 )
 }
 \arguments{
-\item{mae}{MultiAssayExperiment object containing methylation and expression matrices.}
+\item{mae}{MultiAssayExperiment object containing methylation and expression 
+matrices.}
 
-\item{x1, x2}{Coordinates of vertical points in the X axis. Because it is expected to contain methylation values that vary between 0 and 1 the default values are 1/3 and 2/3.}
+\item{x1, x2}{Coordinates of vertical points on the X-axis. 
+Expected to contain methylation values ranging between 0 and 1,
+with default values set to 1/3 and 2/3.}
 
-\item{y1, y2}{Coordinates of vertical points in the Y axis. Leaving them as NULL assigns them the percentiles of yVec defined by `percY1` and `percY2`.}
+\item{y1, y2}{Coordinates of vertical points on the Y-axis. If set to NULL,
+they default to the percentiles of yVec as defined by `percY1` and `percY2`.}
 
-\item{percY1, percY2}{Values used to act as default for `y1`and `y2` when these are set to `NULL`}
+\item{percY1, percY2}{Values used to act as default for `y1`and `y2` when
+these are set to `NULL`.}
 
-\item{aReqPercentsMat}{Matrix of minimum maximum percentage of counts to have in a given cell}
+\item{aReqPercentsMat}{A matrix specifying the minimum and maximum percentage
+counts required in each cell.}
 
-\item{aWeightMifL}{A matrix of weights to score the previous counts if the scatterplot has been classified as L.}
+\item{aWeightMifL}{A matrix of weights applied to score counts when the
+scatterplot is classified as "L".}
 
-\item{aWeightMifNonL}{A matrix of weights to score the previous counts if the scatterplot has been classified as non-L}
+\item{aWeightMifNonL}{A matrix of weights applied to score counts when the
+scatterplot is classified as "non-L".}
 }
 \value{
-A data frame with two columns: 'logicSc' (a logical score indicating whether the gene is considered 'active') and 'numericSc' (a numerical score).
+A data frame with two columns: 'logicSc' (logical score indicating if
+the gene is 'active') and 'numericSc' (a numerical score).
 }
 \description{
-\code{mae_scoreGenesMat} scores scatterplots using a binary and a numeric schemes on a row-wise basis.
+\code{mae_scoreGenesMat} scores scatterplots using a binary and a numeric
+schemes row-wise.
 }
 \examples{
 # Score genes based on example data

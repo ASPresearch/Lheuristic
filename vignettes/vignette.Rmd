@@ -5,7 +5,8 @@ date: "`r Sys.Date()`"
 output:
   rmarkdown::html_vignette: default
 vignette: > 
-  %\VignetteIndexEntry{Selecting L-shaped genes from expression and methylation datasets}
+  %\VignetteIndexEntry{Selecting L-shaped genes from expression 
+    and methylation datasets}
   %\usepackage[utf8]{inputenc}  
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
@@ -20,39 +21,40 @@ knitr::opts_chunk$set(
 ```
 
 # Introduction
-This vignette offers examples on how to use the `LHeuristic` package. The package is designed to help identify genes that exhibit an L-shaped pattern in scatterplots comparing gene expression to methylation.
+This vignette provides examples of how to use the `LHeuristic` package, 
+designed to identify genes with an L-shaped pattern in scatterplots 
+comparing gene expression and methylation.
 
-In essence, the package allows users to:
+The package enables users to:
 
-- Data input
+- Data Input
 
-    - Select (Load) expression values from a csv file
+    - Load gene expression and methylation values from CSV files
+    
+- Data Preprocessing
 
-    - Select (Load) methylation values from a csv file
+    - Set parameters for data usage, choosing either all genes or those meeting 
+    specific filters (e.g., $\mbox{corr}< 0$)
+    - Select the L-shape detection method and configure its parameters
+    
+- Data Processing
 
-- Data preprocessing may need to be automated to ensure its results can be used for filtering.
+    - Run computations to identify L-shaped genes
+    - Generate scatterplots for all genes or filtered selections
+    
+- Data Output
 
-- Set parameter values
-
-    - For data use (all genes or only those that pass certain filters ($\mbox{corr}< 0$))
-    - For the L-shape selection method, the user may need to choose the method and adjust its parameters, as each method has its own set of parameters.
-
-- Data processing (For each method and set of parameters ...)
-
-    - Run the computation and "mark" L-shape genes
-    - Draw the scatterplots of either all genes or only selected genes
-
-- Data output (For each method and set of parameters ...)
-
-    - Save (Download) the resulting gene list(s)
-    - Save (Download) the scatterplots
+    - Save the list of identified genes and scatterplots
 
 
 # Input data
 
-The data is a subset of methylation and expression arrays from the colon adenocarcinoma (COAD) dataset in The Cancer Genome Atlas (TCGA). The full dataset is available on the TCGA website.
+The data is a subset of methylation and expression arrays from the 
+colon adenocarcinoma (COAD) dataset in The Cancer Genome Atlas (TCGA). 
+The full dataset is available on the TCGA website.
 
-Methylation and expression data are in two separate files. Columns represent patient samples, and rows represent genes.
+Methylation and expression data are in two separate files. 
+Columns represent patient samples, and rows represent genes.
 
 ```{r}
 library(Lheuristic)
@@ -63,7 +65,8 @@ data("TCGAexp")
 data("TCGAmet")
 ```
 
-The package includes utility functions like `checkPairing`, which verifies that both matrices have matching row and column numbers and names.
+The package includes utility functions like `checkPairing`,  which verifies 
+that both matrices have matching row and column numbers and names.
 
 ```{r}
 dim(TCGAexp)
@@ -74,9 +77,13 @@ ifelse(checkPairing(TCGAexp, TCGAmet),
 
 ## Using `MultiAssayExperiment` as data container
 
-We have two aligned datasets, so using an appropriate data structure like `MultiAssayExperiment` is recommended, as outlined in this tutorial.
+We have two aligned datasets, therefore using an appropriate 
+data structure like `MultiAssayExperiment` is recommended, 
+as outlined in this tutorial.
 
-It is essential to label the experiments as "methylation" and "expression" in this specific order for the `Lheuristic` package functions to work correctly.
+It is essential to label the experiments as "methylation" and 
+"expression" in this specific order for the `Lheuristic` package functions 
+to work correctly.
 
 ```{r}
 library(MultiAssayExperiment)
@@ -89,15 +96,22 @@ mae1 <- MultiAssayExperiment(experiments = doubleExp)
 
 # Data analysis
 
-The `LHeuristic` package implements the heuristic algorithm by Sanchez et al. (2019) to detect L-shaped scatterplots. However, since many researchers rely on negative correlation to identify genes "regulated by methylation," the package includes both methods for completeness.
+The `LHeuristic` package implements the heuristic algorithm by 
+Sanchez et al. (2019) to detect L-shaped scatterplots. However, since many 
+researchers rely on negative correlation to identify genes "regulated by 
+methylation," the package includes both methods for completeness.
 
-Each method has various parameters optimized for selecting L-shaped patterns and detecting negative correlations in scatterplot data.
+Each method has various parameters optimized for selecting L-shaped patterns 
+and detecting negative correlations in scatterplot data.
 
-The functions also support parameter tuning, allowing for other forms of correlation selection.
+The functions also support parameter tuning, allowing for other forms of 
+correlation selection.
 
 ## Correlation method
 
-The *correlation method* is a simple approach that identifies genes with a significant negative correlation between their expression and methylation values.
+The *correlation method* is a simple approach that identifies genes with a
+significant negative correlation between their expression and methylation 
+values.
 
 ```{r}
 correlation <- correlationSelection(mae1[[1]], mae1[[2]],
@@ -108,7 +122,8 @@ correlationL <- correlation[correlation$SigNegCorr, ]
 correlationNoL <- correlation[!correlation$SigNegCorr, ]
 
 message(
-    "The number of genes selected with the correlation method is: ", sum(correlationL$SigNegCorr),
+    "The number of genes selected with the 
+    correlation method is: ", sum(correlationL$SigNegCorr),
     "\n"
 )
 ```
@@ -116,24 +131,31 @@ message(
 We can observe the distribution of the correlation coefficients:
 
 ```{r,fig.width = 6, fig.height=4}
-plot(density(correlationL[, 1]), main = "Significant correlations in TCGA dataset")
+plot(density(correlationL[, 1]), 
+    main = "Significant correlations in TCGA dataset")
 ```
 
 The number of genes retained depends on the *p-value* and *r* cutoff.
 
-The result is a table listing "selected" and "unselected" genes, with columns for the *r coefficient*, *p-value*, *adjusted p-value*, *distance correlation*, and a Boolean indicating whether the gene was selected based on a significantly negative correlation.
+The result is a table listing "selected" and "unselected" genes, with columns
+for the *r coefficient*, *p-value*, *adjusted p-value*, 
+*distance correlation*, and a Boolean indicating whether the gene was selected
+based on a significantly negative correlation.
 
 ```{r}
 head(correlationL)
 ```
 
-The selected genes can be plotted and saved as a PDF (leaving the file name empty displays the plot on screen). The figure below shows the first four selected genes.
+The selected genes can be plotted and saved as a PDF (leaving the file name 
+empty displays the plot on screen). The figure below shows the first four 
+selected genes.
 
 ```{r, fig.height=6, fig.width=6}
 genes2plot <- rownames(mae1[[2]]) %in% rownames(correlationL)[1:4]
 opt <- par(mfrow = c(2, 2))
 plotGenesMat(
-    mets = mae1[[2]][genes2plot, 1:4], expres = mae1[[1]][genes2plot, 1:4],
+    mets = mae1[[2]][genes2plot, 1:4], 
+    expres = mae1[[1]][genes2plot, 1:4],
     fileName = NULL, text4Title = correlationL[rownames(correlationL), ""]
 )
 
@@ -141,56 +163,89 @@ par(opt)
 ```
 
 
-To plot scatterplots showing the relationship between methylation and expression for a list of genes, use the function `plotGenesMat`.
+To plot scatterplots showing the relationship between methylation and expression
+for a list of genes, use the function `plotGenesMat`.
 
 ## Heuristic method
 
+The heuristic method identifies L-shaped scatterplots by overlaying a grid 
+on the graph and defining specific cells that must contain a minimum 
+(or maximum) percentage of points for the scatterplot to qualify as L-shaped.
 
-The heuristic method selects L-shaped scatterplots by overlaying a grid on the graph and defining cells that must contain a minimum (or maximum) percentage of points for the scatterplot to be considered L-shaped.
-
-It computes a score where points in the selected regions (L region) receive positive scores, while points outside these areas receive negative scores. Properly setting scores and weights should yield positive scores for L-shaped scatterplots and negative scores for others.
+It computes a score where points in the designated L region receive 
+positive values, while points outside this region receive negative values.
+Properly adjusting scores and weights results in positive scores for 
+L-shaped scatterplots and negative scores for non-L-shaped ones.
 
 This concept can be clarified with a "three-band rule":
 
 1. Overlay a \(3 \times 3\) grid on the scatterplot.
 
 2. Classify the scatterplot as **"L" or "non-L"** based on a few conditions    
-    2.1. A *minimum* number of points must be in the upper-left (cell (1,1)) and lower-right (cell (3,3)) corners.
-    2.2. A *maximum* number of points must be in the upper-right (cell (1,3)), as points here indicate hypermethylation and hyperexpression, which are contrary to our goal.
-    2.3. A minimum of points in cell (3,1) is usually *not required* unless we strictly want an L-shape; we can also accept diagonals that reflect a negative correlation.
+    2.1. A *minimum* number of points must be in the upper-left (cell (1,1))
+    and lower-right (cell (3,3)) corners.
+    2.2. A *maximum* number of points must be in the upper-right (cell (1,3)), 
+    as points here indicate hypermethylation and hyperexpression, which are 
+    contrary to our goal.
+    2.3. A minimum of points in cell (3,1) is usually *not required* 
+    unless we strictly want an L-shape; we can also accept diagonals 
+    that reflect a negative correlation.
 
 3. Score points in each sub-grid as follows:
-    3.1. Points in permitted regions (left margin: cells (1,1), (2,2), (3,1), (3,2), (3,3)) score positively if classified as L, or zero if classified as non-L.
-    3.2. Points in non-desired regions (outer band: cells (1,2), (1,3), (2,3)) always score negatively.
+    3.1. Points in permitted regions (left margin: cells (1,1), (2,2), (3,1),
+    (3,2), (3,3)) score positively if classified as L, or zero 
+    if classified as non-L.
+    3.2. Points in non-desired regions (outer band: cells (1,2), (1,3), 
+    (2,3)) always score negatively.
     3.3. Some regions, like cell (2,2), may be neutral and not score.
 
-4. *Tune scoring parameters either manually (based on experience and dataset characteristics) or through cross-validation* (**if a set of positive and negative L-shaped genes is available**).
+4. *Tune scoring parameters either manually (based on experience and dataset*
+*characteristics) or through cross-validation* 
+(**if a set of positive and negative L-shaped genes is available**).
 
 The scheme can be summarized using the following equation:
 
 
 $$
-S(X) = W_L \circ X \times \mathbf{1}_L(X) + W_{L^C} \circ X \times \mathbf{1}_{L^c}(X),
-$$ where
+S(X) = W_L \circ X \times \mathbf{1}_L(X) + W_{L^C} \circ X \times 
+\mathbf{1}_{L^c}(X)
+$$ 
+where:
 
 
+- \(X\) is the matrix of *counts*, representing the number of counts in each 
+cell of the grid.
+- \(W_L\) is the matrix of scores per cell and point if the scatterplot is 
+classified as \(L\).
+- \(W_{L^c}\) is the matrix of scores per cell and point if the scatterplot is 
+classified as non-\(L\) (\(L^c\)). 
+The symbol \(\circ\) denotes the Hadamard product of the two
+matrices \(W_{L/L^c}\) (i.e., element-wise multiplication), 
+and \(\mathbf{1}_{L/L^c}()\) is
+the indicator function for \(L\) or \(L^c\).
 
-- \(X\) is the matrix of *counts*, representing the number of counts in each cell of the grid.
-- \(W_L\) is the matrix of scores per cell and point if the scatterplot is classified as \(L\).
-- \(W_{L^c}\) is the matrix of scores per cell and point if the scatterplot is classified as non-\(L\) (\(L^c\)). The symbol \(\circ\) denotes the Hadamard product of the two matrices \(W_{L/L^c}\) (i.e., element-wise multiplication), and \(\mathbf{1}_{L/L^c}()\) is the indicator function for \(L\) or \(L^c\).
-
-The classification of the scatterplot as \(L\) or \(L^c\) can also be represented by the Hadamard product of three matrices:
+The classification of the scatterplot as \(L\) or \(L^c\) can also be 
+represented by the Hadamard product of three matrices:
 
 \[
-\mathbf{1}_L(X) = \bigwedge_{i,j} X \circ C \circ \left( mMP \times \sum_{i,j} x_{ij} \right),
+\mathbf{1}_L(X) = \bigwedge_{i,j} X \circ C \circ 
+\left( mMP \times \sum_{i,j} x_{ij}
+\right),
 \]
 
 where:
-- \(X\) is the matrix of *counts*, indicating the number of counts in each grid cell.
-- \(C\) is the matrix of conditions to verify if the scatterplot should be classified as \(L\).
-- \(mMP\) is the matrix of minimum and maximum percentages of points required in each cell for classification as \(L\).
-- \(\circ\) represents point-wise logical operations, allowing the product of the three matrices to act as a logical operation.
-- \(\bigwedge_{i,j}\) denotes a logical "AND" operation across all cells; if all cells are TRUE, the result is assigned to \(L\); if any cell fails, it is assigned to \(L^c\).
+- \(X\) is the matrix of *counts*, indicating the number of counts 
+in each grid cell.
+
+- \(C\) is the matrix of conditions to verify if the scatterplot 
+should be classified as \(L\).
+- \(mMP\) is the matrix of minimum and maximum percentages of points 
+required in each cell for classification as \(L\).
+- \(\circ\) represents point-wise logical operations, allowing the product
+of the three matrices to act as a logical operation.
+- \(\bigwedge_{i,j}\) denotes a logical "AND" operation across all cells;
+if all cells are TRUE, the result is assigned to \(L\); if any cell fails,
+it is assigned to \(L^c\).
 
 
 ```{r}
@@ -198,11 +253,13 @@ sampleSize <- dim(mae1[[2]])[2]
 numGenes <- dim(mae1[[2]])[1]
 
 #
-reqPercentages <- matrix(c(2, 20, 5, 5, 40, 20, 3, 3, 2), nrow = 3, byrow = TRUE)
+reqPercentages <- matrix(c(2, 20, 5, 5, 40, 20, 3, 3, 2), 
+    nrow = 3, byrow = TRUE)
 sum(reqPercentages)
 (maxminCounts <- toReqMat(sampleSize, reqPercentages))
 
-(theWeightMifL <- matrix(c(2, -2, -sampleSize / 5, 1, 0, -2, 1, 1, 2), nrow = 3, byrow = TRUE))
+(theWeightMifL <- matrix(c(2, -2, -sampleSize / 5, 1, 0, -2, 1, 1, 2), 
+    nrow = 3, byrow = TRUE))
 (theWeightMifNonL <- matrix(c(0, -2, -sampleSize / 5, 0, 0, -2, 0, 0, 0),
     nrow = 3,
     byrow = TRUE
@@ -220,20 +277,24 @@ heurL <- heur[heur$logicSc, ]
 heurNoL <- heur[!heur$logicSc, ]
 ```
 
-We can check the results in the following table, which includes a logical value indicating whether the gene exhibits an L-shape based on our criteria, along with the *numerSc* score.
+We can check the results in the following table, which includes a logical value
+indicating whether the gene exhibits an L-shape based on our criteria, 
+along with the *numerSc* score.
 
 
 ```{r}
 knitr::kable(heurL)
 ```
 
-Next, we can visualize the scatterplots of the selected genes or save them on a PDF file.
+Next, we can visualize the scatterplots of the selected genes or save them
+on a PDF file.
 
 ```{r, fig.height=6, fig.width=6}
 genes2plot2 <- rownames(mae1[[2]]) %in% rownames(heurL)[1:4]
 opt <- par(mfrow = c(2, 2))
 plotGenesMat(
-    mets = mae1[[2]][genes2plot2, ], expres = mae1[[1]][genes2plot2, ],
+    mets = mae1[[2]][genes2plot2, ], 
+    expres = mae1[[1]][genes2plot2, ],
     fileName = NULL, text4Title = heurL[genes2plot2, "numeriSc"]
 )
 par(opt)
@@ -241,27 +302,34 @@ par(opt)
 
 
 
-In summary, the Heuristic method allows us to select genes with an L-shaped scatterplot as follows:
+In summary, the Heuristic method allows us to select genes with an L-shaped 
+scatterplot as follows:
 
-1. **Select datasets:** A pair of row-column matched matrices for expression and methylation.
+1. **Select datasets:** A pair of row-column matched matrices for expression and
+methylation.
 
 2. **Set parameters:**
     2.1. Grid definition
     2.2. Binary scoring
     2.3. Numerical scoring
 
-3. **Score the selected data:** Return scores, the classification (L-Shape = TRUE / non-L-shape = FALSE), and plots for each gene.
+3. **Score the selected data:** Return scores, the classification 
+(L-Shape = TRUE / non-L-shape = FALSE), and plots for each gene.
 
 # Comparison of Selected Gene Lists
 
-After identifying genes using the two methods, we can create the intersection of all lists and visualize the results with a Venn Diagram.
+After identifying genes using the two methods, we can create the intersection 
+of all lists and visualize the results with a Venn Diagram.
 
-We may choose genes selected by two or more methods to ensure greater consistency in the selection.
+We may choose genes selected by two or more methods to ensure greater 
+consistency in the selection.
 
 
 ```{r}
-inCommonL <- intersect(rownames(correlationL), rownames(heurL))
-inCorrelationLOnly <- setdiff(rownames(correlationL), inCommonL)
+inCommonL <- intersect(rownames(correlationL), 
+    rownames(heurL))
+inCorrelationLOnly <- setdiff(rownames(correlationL),
+    inCommonL)
 inheurLLOnly <- setdiff(rownames(heurL), inCommonL)
 ```
 
@@ -275,32 +343,41 @@ myGene1 <- inCommonL[1]
 xVec <- as.numeric(mae1[[2]][myGene1, ])
 yVec <- as.numeric(mae1[[1]][myGene1, ])
 titleT <- paste(myGene1, "(May be GRM)")
-plotGeneSel(xMet = xVec, yExp = yVec, titleText = titleT, x1 = 1 / 3, x2 = 2 / 3)
+plotGeneSel(xMet = xVec, yExp = yVec,
+    titleText = titleT,
+    x1 = 1/3, x2 = 2/3)
 
 myGene2 <- inCommonL[2]
 xVec <- as.numeric(mae1[[2]][myGene2, ])
 yVec <- as.numeric(mae1[[1]][myGene2, ])
 titleT <- paste(myGene2, "(May be GRM)")
-plotGeneSel(xMet = xVec, yExp = yVec, titleText = titleT, x1 = 1 / 3, x2 = 2 / 3)
+plotGeneSel(xMet = xVec, yExp = yVec,
+    titleText = titleT,
+    x1 = 1/3, x2 = 2/3)
 
 
 myGene3 <- inCommonL[3]
 xVec <- as.numeric(mae1[[2]][myGene3, ])
 yVec <- as.numeric(mae1[[1]][myGene3, ])
 titleT <- paste(myGene3, "(May be GRM)")
-plotGeneSel(xMet = xVec, yExp = yVec, titleText = titleT, x1 = 1 / 3, x2 = 2 / 3)
+plotGeneSel(xMet = xVec, yExp = yVec,
+    titleText = titleT,
+    x1 = 1/3, x2 = 2/3)
 
 myGene5 <- inCommonL[5]
 xVec <- as.numeric(mae1[[2]][myGene3, ])
 yVec <- as.numeric(mae1[[1]][myGene3, ])
 titleT <- paste(myGene3, "(May be GRM)")
-plotGeneSel(xMet = xVec, yExp = yVec, titleText = titleT, x1 = 1 / 3, x2 = 2 / 3)
+plotGeneSel(xMet = xVec, yExp = yVec,
+    titleText = titleT,
+    x1 = 1/3, x2 = 2/3)
 ```
 
 # References
 
 Sanchez-Pla A, Miró B, Carmona F et al. 
-A heuristic algorithm to select genes potentially regulated by methylation [version 1; not peer reviewed]. 
+A heuristic algorithm to select genes potentially regulated by methylation
+[version 1;  not peer reviewed]. 
 F1000Research 2019, 8:1017.
 (https://doi.org/10.7490/f1000research.1116986.1)
 

@@ -1,12 +1,14 @@
 #' numScore
 #'
 #' \code{numScore} A function to score scatterplot using a weight matrix.
-#'
 #' The scoring does not incorporate logical conditions such as 'if xij < C ...'
-#' @param aGrid A matrix of counts as computed by `calcFreqs` function
-#' @param LShaped A boolean value indicating if this scatterplot can be seen as LShaped.
-#' @param aWeightMifL A matrix of weights to score the previous counts if the scatterplot has been classified as L.
-#' @param aWeightMifNonL A matrix of weights to score the previous counts if the scatterplot has been classified as non-L
+#' @param aGrid A matrix of counts computed by the `calcFreqs` function.
+#' @param LShaped A boolean indicating whether the scatterplot can be
+#' classified as "L-shaped".
+#' @param aWeightMifL A matrix of weights applied to score counts if
+#' the scatterplot is classified as "L".
+#' @param aWeightMifNonL A matrix of weights applied to score counts if
+#' the scatterplot is classified as "non-L".
 #'
 #' @return a numeric score for each scatterplot
 #'

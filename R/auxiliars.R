@@ -85,7 +85,8 @@ countNAs <- function(X) {
 }
 
 
-read2 <- function(expresFName, metFName, dataDirectory = ".", sepChar = ";", decChar = ".") {
+read2 <- function(expresFName, metFName, dataDirectory = ".", 
+                    sepChar = ";", decChar = ".") {
     expres <- utils::read.table(
         file = file.path(dataDirectory, expresFName), header = TRUE,
         sep = sepChar, dec = decChar, row.names = 1

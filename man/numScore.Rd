@@ -7,21 +7,22 @@
 numScore(aGrid, LShaped, aWeightMifL, aWeightMifNonL)
 }
 \arguments{
-\item{aGrid}{A matrix of counts as computed by `calcFreqs` function}
+\item{aGrid}{A matrix of counts computed by the `calcFreqs` function.}
 
-\item{LShaped}{A boolean value indicating if this scatterplot can be seen as LShaped.}
+\item{LShaped}{A boolean indicating whether the scatterplot can be
+classified as "L-shaped".}
 
-\item{aWeightMifL}{A matrix of weights to score the previous counts if the scatterplot has been classified as L.}
+\item{aWeightMifL}{A matrix of weights applied to score counts if
+the scatterplot is classified as "L".}
 
-\item{aWeightMifNonL}{A matrix of weights to score the previous counts if the scatterplot has been classified as non-L}
+\item{aWeightMifNonL}{A matrix of weights applied to score counts if
+the scatterplot is classified as "non-L".}
 }
 \value{
 a numeric score for each scatterplot
 }
 \description{
 \code{numScore} A function to score scatterplot using a weight matrix.
-}
-\details{
 The scoring does not incorporate logical conditions such as 'if xij < C ...'
 }
 \examples{

@@ -15,7 +15,8 @@ checkPairing(X, Y)
 a message indicating if 2 matrices have the same dimensions
 }
 \description{
-\code{checkPairing} is a  function to check if two matrices have the same dimensions (same rows and columns) and same row and column names.
+\code{checkPairing} function to check if two matrices have the same 
+dimensions row and column names.
 }
 \examples{
 (X <- round(matrix(rnorm(30) * 10, ncol = 6), 1)) + 1:10

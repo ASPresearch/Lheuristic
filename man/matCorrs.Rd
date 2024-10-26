@@ -7,15 +7,16 @@
 matCorrs(X, Y)
 }
 \arguments{
-\item{X}{First matrix}
+\item{X}{First matrix.}
 
-\item{Y}{Second matrix. Must have the same dimensions as X}
+\item{Y}{Second matrix. Must have the same dimensions as X.}
 }
 \value{
 matrix with a correlation value for each gene
 }
 \description{
-\code{matCorrs} Given two matrices X (m,n), Y(m,n) this function computes (m) Pearson and Spearman correlation coefficients
+\code{matCorrs} Given two matrices X (m,n), Y(m,n) the function
+computes (m) Pearson and Spearman correlation coefficients
 and their significance p-values for every pair of row vectors.
 }
 \examples{
