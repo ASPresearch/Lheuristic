@@ -12,7 +12,7 @@ checkPairing(X, Y)
 \item{Y}{matrix}
 }
 \value{
-a message indicating if 2 matrices have the same dimensions
+a logical value indicating if the two matrices have the same row and column names.
 }
 \description{
 \code{checkPairing} function to check if two matrices have the same 

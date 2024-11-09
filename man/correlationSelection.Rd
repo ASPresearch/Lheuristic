@@ -5,8 +5,7 @@
 \title{correlationSelection: A vector correlation function calculator}
 \usage{
 correlationSelection(
-  X,
-  Y,
+  mae,
   type = "Spearman",
   adj = TRUE,
   pValCutoff = 0.05,
@@ -15,9 +14,7 @@ correlationSelection(
 )
 }
 \arguments{
-\item{X}{First matrix}
-
-\item{Y}{Second matrix. Must have the same dimensions as X.}
+\item{mae}{a MultiAssayExperiment object containing the methylation}
 
 \item{type}{specifies the correlation to choose between Spearman
 and Pearson. Default is Spearman.}
@@ -34,7 +31,7 @@ Default is 0, no cut off.}
 p-value. Default set to FALSE.}
 }
 \value{
-dataframe with correlations selected
+dataframe with the correlations selected
 }
 \description{
 \code{correlationSelection} Uses the function matCorrs; 
@@ -44,14 +41,30 @@ for every pair of row vectors.
 }
 \examples{
 
-(X <- round(matrix(rnorm(30) * 10, ncol = 6), 1))
-(Y <- round(X + matrix(rnorm(30) * 10, ncol = 6), 1))
-(rownames(X) <- rownames(Y) <- letters[1:nrow(X)])
-correlationSelection(X, Y,
-    pValCutoff = 0.25,
-    rCutoff = 0.1, type = "Spearman", sortByCorrs = TRUE
+# Methylation data
+methylData <- matrix(runif(50), nrow = 10)
+colnames(methylData) <- paste0("samp", 1:ncol(methylData))
+rownames(methylData) <- paste0("gene", 1:nrow(methylData))
+# Expression data
+expresData <- matrix(rnorm(50), nrow = 10)
+colnames(expresData) <- paste0("samp", 1:ncol(methylData))
+rownames(expresData) <- paste0("gene", 1:nrow(methylData))
+# ColData
+colDat <- data.frame(
+    sampleID = colnames(methylData),
+    name = letters[1:ncol(methylData)]
 )
 
+rownames(colDat) <- colDat$sampleID
+mae <- MultiAssayExperiment::MultiAssayExperiment(
+    experiments = list(
+        methylation = methylData,
+        expression = expresData
+    ),
+    colData = colDat
+)
+correlationSelection(mae, pValCutoff = 0.25, rCutoff = 0.1, type = "Spearman", 
+sortByCorrs = TRUE)
 }
 \keyword{Calculator}
 \keyword{Correlation}

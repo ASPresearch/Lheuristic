@@ -48,7 +48,7 @@ mae <- MultiAssayExperiment::MultiAssayExperiment(
     ),
     colData = colDat
 )
-trueFreq <- mae_calcFreqs(mae, x1 = 1 / 3, x2 = 2 / 3)
+trueFreq <- calcFreqs(mae, x1 = 1 / 3, x2 = 2 / 3)
 LShaped <- FALSE
 weightsIfL <- matrix(c(2, -1, -99, 1, 0, -1, 1, 1, 2),
     nrow = 3, byrow = TRUE

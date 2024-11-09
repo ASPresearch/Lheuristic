@@ -1,6 +1,6 @@
-#' mae_calcFreqs
+#' calcFreqs
 #'
-#' \code{mae_calcFreqs} Given a MultiAssayExperiment with methylation and
+#' \code{calcFreqs} Given a MultiAssayExperiment with methylation and
 #' expression data, the function overlays a grid on a YMet ~ Xmet scatterplot
 #' and returns a 3x3 matrix with point counts per grid cell based on  the
 #' vertical and horizontal lines.
@@ -20,7 +20,7 @@
 #' @return a matrix with calculated frequencies
 #'
 #' @keywords calculation frequencies
-#' @export mae_calcFreqs
+#' @export calcFreqs
 #'
 #' @examples
 #'
@@ -66,11 +66,11 @@
 #' percY1 <- 1 / 3
 #' percY2 <- 2 / 3
 #'
-#' mae_calcFreqs(
+#' calcFreqs(
 #'     mae = mae, geneNum = geneRow,
 #'     x1, x2, y1, y2, percY1, percY2
 #' )
-mae_calcFreqs <- function(mae, geneNum, x1, x2, y1 = NULL, y2 = NULL,
+calcFreqs <- function(mae, geneNum, x1, x2, y1 = NULL, y2 = NULL,
     percY1 = 1 / 3, percY2 = 2 / 3) {
     # if (prod(names(mae@ExperimentList) == c('methylation' ,'expression'
     # ))!=1) stop('Error: Names of layers must be 'methylation' and

@@ -6,7 +6,7 @@
 #' @param X matrix
 #' @param Y matrix
 #'
-#' @return a message indicating if 2 matrices have the same dimensions
+#' @return a logical value indicating if the two matrices have the same row and column names.
 #'
 #' @keywords matrix
 #'
@@ -19,6 +19,11 @@
 #' (m1 <- checkPairing(X, Y))
 #'
 checkPairing <- function(X, Y) {
-    check <- (sum(rownames(X) != rownames(Y)) == 0) &&
-                (sum(colnames(X) != colnames(Y)) == 0)
+  # Check if row names and column names match
+  row_check <- sum(rownames(X) != rownames(Y)) == 0
+  col_check <- sum(colnames(X) != colnames(Y)) == 0
+  
+  # Return TRUE if both rows and columns match, FALSE otherwise
+  return(row_check && col_check)
 }
+

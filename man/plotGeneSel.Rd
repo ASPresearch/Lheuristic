@@ -5,8 +5,8 @@
 \title{plotGeneSel}
 \usage{
 plotGeneSel(
-  xMet,
-  yExp,
+  mae,
+  genePos,
   titleText,
   x1 = 1/3,
   x2 = 2/3,
@@ -18,9 +18,11 @@ plotGeneSel(
 )
 }
 \arguments{
-\item{xMet}{vector with methylation data.}
+\item{mae}{A MultiAssayExperiment object containing the methylation
+and expression data for the specified gene.}
 
-\item{yExp}{vector for expression data.}
+\item{genePos}{The index of the gene to be plotted within the
+MultiAssayExperiment object.}
 
 \item{titleText}{plot title.}
 
@@ -45,12 +47,29 @@ a pdf with scatterplots for selected genes
 \code{plotGeneSel} plots points on a scatterplot with a 3x3 grid overimposed.
 }
 \examples{
-xMet <- rnorm(100)
-yExp <- rnorm(100)
-# data('TCGAexp')
-# data('TCGAmet')
-titleText <- "Methylation-Gene Expression Correlation"
-plotGeneSel(xMet, yExp, titleText)
+# Methylation data
+methylData <- matrix(runif(50), nrow = 10)
+colnames(methylData) <- paste0("samp", 1:ncol(methylData))
+rownames(methylData) <- paste0("gene", 1:nrow(methylData))
+# Expression data
+expresData <- matrix(rnorm(50), nrow = 10)
+colnames(expresData) <- paste0("samp", 1:ncol(methylData))
+rownames(expresData) <- paste0("gene", 1:nrow(methylData))
+# ColData
+colDat <- data.frame(
+    sampleID = colnames(methylData),
+    name = letters[1:ncol(methylData)]
+)
+
+rownames(colDat) <- colDat$sampleID
+mae <- MultiAssayExperiment::MultiAssayExperiment(
+    experiments = list(
+        methylation = methylData,
+        expression = expresData
+    ),
+    colData = colDat
+)
+plotGeneSel(mae, genePos = 7, titleText = "L-shaped gene")
 
 }
 \keyword{gene}

@@ -24,7 +24,7 @@ reqPercentages <- matrix(c(3, 20, 5, 5, 40, 20, 4, 1, 2), nrow = 3, byrow = TRUE
     byrow = TRUE
 ))
 
-mae_scoreGenesMat(mae,
+scoreGenesMat(mae,
     x1 = 1 / 3, x2 = 2 / 3, y1 = NULL, y2 = NULL, percY1 = 1 / 3, percY2 = 2 / 3,
     aReqPercentsMat = reqPercentages, aWeightMifL = theWeightMifL, aWeightMifNonL = theWeightMifNonL
 )

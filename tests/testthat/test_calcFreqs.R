@@ -25,7 +25,7 @@ y2 <- NULL
 percY1 <- 1 / 3
 percY2 <- 2 / 3
 
-mae_calcFreqs(mae = mae, geneNum = geneRow, x1, x2, y1, y2, percY1, percY2)
+calcFreqs(mae = mae, geneNum = geneRow, x1, x2, y1, y2, percY1, percY2)
 colData(mae)
 experiments(mae)
 sampleMap(mae)

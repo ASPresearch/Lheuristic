@@ -6,8 +6,7 @@
 \usage{
 plotGeneByName(
   geneName,
-  mets,
-  expmat,
+  mae,
   filename = NULL,
   text4Title = NULL,
   plotGrid = TRUE,
@@ -17,12 +16,11 @@ plotGeneByName(
 \arguments{
 \item{geneName}{The name of the gene to be plotted.}
 
-\item{mets}{A matrix containing the methylation data for the specified gene.}
-
-\item{expmat}{A matrix containing the expression data for the specified gene.}
+\item{mae}{A MultiAssayExperiment object containing the methylation
+and expression data for the specified gene.}
 
 \item{filename}{If provided, the name of the file to save the results
-as a PDF;  defaults to NULL.}
+as a PDF; defaults to NULL.}
 
 \item{text4Title}{A string used as the main title for the plot. Defaults to 
 `geneName` if set to NULL.}
@@ -38,16 +36,34 @@ a pdf with scatterplots of selected by gene name
 }
 \description{
 \code{plotGeneByName} plots points on a scatterplot with a 3x3 grid
-superimposed. The name of a the gene is provided jointly with the matrix
-and used to select the row to be plotted.
+superimposed. The name of a the gene is provided jointly with the
+MultiAssayExperiment object and used to select the row to be plotted.
 }
 \examples{
 # Plot gene by name based on example data
-mets <- matrix(runif(1000), nrow = 100)
-expres <- matrix(rnorm(1000), nrow = 100)
-rownames(mets) <- paste0("Gene", 1:nrow(mets))
-rownames(expres) <- paste0("Gene", 1:nrow(expres))
-plotGeneByName(gene = "Gene40", mets = mets, expmat = expres)
+# Methylation data
+methylData <- matrix(runif(50), nrow = 10)
+colnames(methylData) <- paste0("samp", 1:ncol(methylData))
+rownames(methylData) <- paste0("gene", 1:nrow(methylData))
+# Expression data
+expresData <- matrix(rnorm(50), nrow = 10)
+colnames(expresData) <- paste0("samp", 1:ncol(methylData))
+rownames(expresData) <- paste0("gene", 1:nrow(methylData))
+# ColData
+colDat <- data.frame(
+    sampleID = colnames(methylData),
+    name = letters[1:ncol(methylData)]
+)
+
+rownames(colDat) <- colDat$sampleID
+mae <- MultiAssayExperiment::MultiAssayExperiment(
+    experiments = list(
+        methylation = methylData,
+        expression = expresData
+    ),
+    colData = colDat
+)
+plotGeneByName(gene = "gene40", mae = mae)
 
 }
 \keyword{gene}

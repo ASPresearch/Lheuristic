@@ -1,6 +1,6 @@
-#' mae_scoreGenesMat
+#' scoreGenesMat
 #'
-#' \code{mae_scoreGenesMat} scores scatterplots using a binary and a numeric
+#' \code{scoreGenesMat} scores scatterplots using a binary and a numeric
 #' schemes row-wise.
 #' @param mae MultiAssayExperiment object containing methylation and expression 
 #' matrices.
@@ -17,7 +17,7 @@
 #' they default to the percentiles of yVec as defined by `percY1` and `percY2`.
 #' @param percY1,percY2 Values used to act as default for `y1`and `y2` when
 #' these are set to `NULL`.
-#' @export mae_scoreGenesMat
+#' @export scoreGenesMat
 #' @return A data frame with two columns: 'logicSc' (logical score indicating if
 #' the gene is 'active') and 'numericSc' (a numerical score).
 #'
@@ -56,14 +56,14 @@
 #' (theWeightMifNonL <- matrix(c(0, -2, -sampleSize / 5, 0, 0, -2, 0, 0, 0),
 #'     nrow = 3, byrow = TRUE
 #' ))
-#' mae_scoreGenesMat(mae,
+#' scoreGenesMat(mae,
 #'     x1 = 1 / 3, x2 = 2 / 3,
 #'     y1 = NULL, y2 = NULL, percY1 = 1 / 3, percY2 = 2 / 3,
 #'     aReqPercentsMat = reqPercentages,
 #'     aWeightMifL = theWeightMifL,
 #'     aWeightMifNonL = theWeightMifNonL
 #' )
-mae_scoreGenesMat <- function(mae, x1 = 1 / 3, x2 = 2 / 3, y1 = NULL, y2 = NULL,
+scoreGenesMat <- function(mae, x1 = 1 / 3, x2 = 2 / 3, y1 = NULL, y2 = NULL,
     percY1 = 1 / 3,
     percY2 = 2 / 3, aReqPercentsMat, aWeightMifL = 0.5, aWeightMifNonL = 0.25) {
     if (sum(aReqPercentsMat) != 100) {
@@ -87,7 +87,7 @@ mae_scoreGenesMat <- function(mae, x1 = 1 / 3, x2 = 2 / 3, y1 = NULL, y2 = NULL,
         geneNum <- rownames(expres)[gene]
         xMet <- mets[geneNum, ]
         yExp <- expres[geneNum, ]
-        geneGrid <- mae_calcFreqs(mae, geneNum, x1, x2,
+        geneGrid <- calcFreqs(mae, geneNum, x1, x2,
             y1 = NULL, y2 = NULL, percY1 = 1 / 3,
             percY2 = 2 / 3
         )

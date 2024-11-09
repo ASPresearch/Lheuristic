@@ -5,8 +5,8 @@
 \title{plotGenesMat}
 \usage{
 plotGenesMat(
-  mets,
-  expres,
+  mae,
+  geneNames = NULL,
   fileName = NULL,
   text4Title = NULL,
   x1 = 1/3,
@@ -16,13 +16,16 @@ plotGenesMat(
   percY1 = 1/3,
   percY2 = 2/3,
   plotGrid = TRUE,
-  logicSc = NULL
+  logicSc = NULL,
+  saveToPDF = FALSE
 )
 }
 \arguments{
-\item{mets}{A matrix containing methylation data.}
+\item{mae}{A MultiAssayExperiment object containing the methylation
+and expression data.}
 
-\item{expres}{A matrix containing expression data.}
+\item{geneNames}{A character vector of gene names to plot. 
+If NULL, all genes are plotted.}
 
 \item{fileName}{The name of the file used to save the results as a PDF.
 If NULL, the plot is displayed on the screen.}
@@ -55,6 +58,10 @@ whether to plot gridlines on the graph.}
 
 \item{logicSc}{A numeric score representing the L-shape score. 
 Defaults to NULL.}
+
+\item{saveToPDF}{Logical, if `TRUE`, saves the plots to a PDF file 
+specified by `fileName`. If `FALSE` (default), plots are displayed 
+interactively without saving.}
 }
 \value{
 a pdf with scatterplots for all genes
@@ -64,11 +71,30 @@ a pdf with scatterplots for all genes
 with two matrices.
 }
 \examples{
-mets <- matrix(runif(1000), nrow = 100)
-expres <- matrix(rnorm(1000), nrow = 100)
-rownames(mets) <- paste0("Gene", 1:nrow(mets))
-rownames(expres) <- paste0("Gene", 1:nrow(expres))
-# plotGenesMat (mets=mets, expres=expres, fileName = 'PlotAllGenes.pdf')
+# Methylation data
+methylData <- matrix(runif(50), nrow = 10)
+colnames(methylData) <- paste0("samp", 1:ncol(methylData))
+rownames(methylData) <- paste0("gene", 1:nrow(methylData))
+# Expression data
+expresData <- matrix(rnorm(50), nrow = 10)
+colnames(expresData) <- paste0("samp", 1:ncol(methylData))
+rownames(expresData) <- paste0("gene", 1:nrow(methylData))
+# ColData
+colDat <- data.frame(
+    sampleID = colnames(methylData),
+    name = letters[1:ncol(methylData)]
+)
+
+rownames(colDat) <- colDat$sampleID
+mae <- MultiAssayExperiment::MultiAssayExperiment(
+    experiments = list(
+        methylation = methylData,
+        expression = expresData
+    ),
+    colData = colDat
+) 
+selectedGenes <- c("gene1", "gene5")
+plotGenesMat(mae, geneNames = selectedGenes, saveToPDF = FALSE)
 
 }
 \keyword{gene}

@@ -3,8 +3,10 @@
 #' \code{plotGenesMat} wrapper function for plotting the scatterplots associated
 #' with two matrices.
 #'
-#' @param mets A matrix containing methylation data.
-#' @param expres A matrix containing expression data.
+#' @param mae A MultiAssayExperiment object containing the methylation
+#' and expression data.
+#' @param geneNames A character vector of gene names to plot. 
+#' If NULL, all genes are plotted.
 #' @param fileName The name of the file used to save the results as a PDF.
 #' If NULL, the plot is displayed on the screen.
 #' @param text4Title An optional title for the plot, incorporating the gene name
@@ -27,50 +29,87 @@
 #' whether to plot gridlines on the graph.
 #' @param logicSc A numeric score representing the L-shape score. 
 #' Defaults to NULL.
+#'@param saveToPDF Logical, if `TRUE`, saves the plots to a PDF file 
+#'specified by `fileName`. If `FALSE` (default), plots are displayed 
+#'interactively without saving.
 #'
 #' @return a pdf with scatterplots for all genes
 #'
 #' @keywords scatterplot gene plot matrix
 #' @importFrom grDevices pdf
 #' @importFrom grDevices dev.off
+#' @importFrom MultiAssayExperiment assay
 #' @export plotGenesMat
 #' @examples
-#' mets <- matrix(runif(1000), nrow = 100)
-#' expres <- matrix(rnorm(1000), nrow = 100)
-#' rownames(mets) <- paste0("Gene", 1:nrow(mets))
-#' rownames(expres) <- paste0("Gene", 1:nrow(expres))
-#' # plotGenesMat (mets=mets, expres=expres, fileName = 'PlotAllGenes.pdf')
+#' # Methylation data
+#' methylData <- matrix(runif(50), nrow = 10)
+#' colnames(methylData) <- paste0("samp", 1:ncol(methylData))
+#' rownames(methylData) <- paste0("gene", 1:nrow(methylData))
+#' # Expression data
+#' expresData <- matrix(rnorm(50), nrow = 10)
+#' colnames(expresData) <- paste0("samp", 1:ncol(methylData))
+#' rownames(expresData) <- paste0("gene", 1:nrow(methylData))
+#' # ColData
+#' colDat <- data.frame(
+#'     sampleID = colnames(methylData),
+#'     name = letters[1:ncol(methylData)]
+#' )
 #'
-plotGenesMat <- function(mets, expres, fileName = NULL, 
+#' rownames(colDat) <- colDat$sampleID
+#' mae <- MultiAssayExperiment::MultiAssayExperiment(
+#'     experiments = list(
+#'         methylation = methylData,
+#'         expression = expresData
+#'     ),
+#'     colData = colDat
+#' ) 
+#' selectedGenes <- c("gene1", "gene5")
+
+#' plotGenesMat(mae, geneNames = selectedGenes, saveToPDF = FALSE)
+#'
+plotGenesMat <- function(mae, geneNames = NULL, fileName = NULL, 
     text4Title = NULL, x1 = 1/3,
-    x2 = 2/3, y1 = NULL, y2 = NULL, percY1 = 1/3, percY2 = 2/3, 
+    x2 = 2/3, y1 = NULL, y2 = NULL, percY1 = 1/3, 
+    percY2 = 2/3, 
     plotGrid = TRUE,
-    logicSc = NULL) {
-    if (!is.null(fileName)) {
-        grDevices::pdf(fileName)
+    logicSc = NULL, saveToPDF = FALSE) {
+  
+    if (!is.null(geneNames)) {
+    mae <- mae[geneNames, , ]
     }
+  
+  # Open PDF device if saveToPDF is TRUE and fileName is provided
+    if (saveToPDF && !is.null(fileName)) {
+    grDevices::pdf(fileName)
+  }
+  
+  # Set title text based on provided title or logic score
     if (!is.null(text4Title)) {
-        text4Title <- paste(rownames(expres), text4Title, sep = ",")
+    text4Title <- paste(rownames(assay(mae, "expression")), text4Title, sep = ",")
     } else {
-        if (is.null(logicSc)) {
-            text4Title <- rownames(expres)
-        } else {
-            text4Title <- paste(rownames(expres), "\n L-shaped = ", 
-                logicSc, sep = " ")
-        }
+    if (is.null(logicSc)) {
+    text4Title <- rownames(assay(mae, "expression"))
+    } else {
+    text4Title <- paste(rownames(assay(mae, "expression")), "\n L-shaped = ", 
+                          logicSc, sep = " ")
     }
-    # opt<-par(mfrow=c(2,2))
-    for (gene in seq_len(nrow(expres))) {
-        xVec <- as.numeric(mets[gene, ])
-        yVec <- as.numeric(expres[gene, ])
-        plotGeneSel(
-            xMet = xVec, yExp = yVec, titleText = text4Title[gene],
-            x1 = x1,
-            x2 = x2, percY1 = percY1, percY2 = percY2, plotGrid = plotGrid
-        )
     }
-    # par(opt)
-    if (!is.null(fileName)) {
+  
+  # Loop through each gene and plot
+    for (gene in seq_len(nrow(assay(mae, "expression")))) {
+    xVec <- as.numeric(assay(mae, "methylation")[gene, ])
+    yVec <- as.numeric(assay(mae, "expression")[gene, ])
+    plotGeneSel(
+        mae = mae,
+        genePos = gene,
+        titleText = text4Title[gene],
+        x1 = x1,
+        x2 = x2, percY1 = percY1, percY2 = percY2, plotGrid = plotGrid
+    )
+    }
+  
+  # Close PDF device if it was opened
+    if (saveToPDF && !is.null(fileName)) {
         grDevices::dev.off()
     }
 }
