@@ -58,11 +58,11 @@ plotGeneByName <- function(geneName, mae, filename = NULL,
     if (!is.null(filename)) {
     grDevices::pdf(filename)
     }
-  
+
     # Set plot title   
     plotTitle <- if (!is.null(text4Title)) paste(geneName, text4Title, 
     sep = ", ") else geneName
-  
+
     # Check if the gene name exists in the expression data 
     #and get the gene position
     if (geneName %in% rownames(assay(mae, "expression"))) {
@@ -70,13 +70,13 @@ plotGeneByName <- function(geneName, mae, filename = NULL,
     } else {
     stop("Gene not found in expression data.")
     }
-  
+
     # Plot using plotGeneSel with ggplot2
     plotGeneSel(
     mae = mae, genePos = genePos, titleText = plotTitle,
     x1 = 1/3, x2 = 2/3, plotGrid = plotGrid
     )
-  
+
     # Close PDF if filename is provided
     if (!is.null(filename)) {
     grDevices::dev.off()

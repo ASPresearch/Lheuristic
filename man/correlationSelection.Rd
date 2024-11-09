@@ -63,8 +63,8 @@ mae <- MultiAssayExperiment::MultiAssayExperiment(
     ),
     colData = colDat
 )
-correlationSelection(mae, pValCutoff = 0.25, rCutoff = 0.1, type = "Spearman", 
-sortByCorrs = TRUE)
+correlationSelection(mae, pValCutoff = 0.25, rCutoff = 0.1, 
+type = "Spearman", sortByCorrs = TRUE)
 }
 \keyword{Calculator}
 \keyword{Correlation}

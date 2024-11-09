@@ -45,42 +45,51 @@
 #'     ),
 #'     colData = colDat
 #' )
-#' correlationSelection(mae, pValCutoff = 0.25, rCutoff = 0.1, type = "Spearman", 
-#' sortByCorrs = TRUE)
+#' correlationSelection(mae, pValCutoff = 0.25, rCutoff = 0.1, 
+#' type = "Spearman", sortByCorrs = TRUE)
 
 correlationSelection <- function(mae, type = "Spearman", adj = TRUE,
-                                 pValCutoff = 0.05,
-                                 rCutoff = 0, sortByCorrs = FALSE) {
-  # Extract the methylation and expression data from the MultiAssayExperiment
-  X <- assay(mae, "methylation")
-  Y <- assay(mae, "expression")
-  
-  # Calculate the correlation matrix
-  corsMat <- matAllCorrs(X, Y, sortByCorrs = sortByCorrs)
-  
-  # Filter based on correlation type
-  if (type == "Spearman") {
-    selected <- corsMat[, c("r (Sp)", "p (Sp)", "adj.Spear.Pval", "distCor")]
-    lShaped <- if (adj) {
-      (!is.na(selected[, "r (Sp)"]) & selected[, "r (Sp)"] < rCutoff) &
-        (!is.na(selected[, "adj.Spear.Pval"]) & selected[, "adj.Spear.Pval"] < pValCutoff)
+    pValCutoff = 0.05,
+    rCutoff = 0, sortByCorrs = FALSE) {
+    # Extract the methylation and expression data from the MAE
+    X <- assay(mae, "methylation")
+    Y <- assay(mae, "expression")
+
+    # Calculate the correlation matrix
+    corsMat <- matAllCorrs(X, Y, sortByCorrs = sortByCorrs)
+
+    # Filter based on correlation type
+    if (type == "Spearman") {
+        selected <- corsMat[, c("r (Sp)", "p (Sp)", 
+        "adj.Spear.Pval", "distCor")]
+        lShaped <- if (adj) {
+        (!is.na(selected[, "r (Sp)"]) & selected[, "r (Sp)"] < rCutoff) &
+        (!is.na(selected[, "adj.Spear.Pval"]) & 
+        selected[, "adj.Spear.Pval"] < pValCutoff)
     } else {
-      (!is.na(selected[, "r (Sp)"]) & selected[, "r (Sp)"] < rCutoff) &
-        (!is.na(selected[, "p (Sp)"]) & selected[, "p (Sp)"] < pValCutoff)
+        (!is.na(selected[, "r (Sp)"]) & 
+        selected[, "r (Sp)"] < rCutoff) &
+        (!is.na(selected[, "p (Sp)"]) & 
+        selected[, "p (Sp)"] < pValCutoff)
     }
-  } else {
-    selected <- corsMat[, c("r (Pear)", "p (Pear)", "adj.Pear.Pval", "distCor")]
-    lShaped <- if (adj) {
-      (!is.na(selected[, "r (Pear)"]) & selected[, "r (Pear)"] < rCutoff) &
-        (!is.na(selected[, "adj.Pear.Pval"]) & selected[, "adj.Pear.Pval"] < pValCutoff)
     } else {
-      (!is.na(selected[, "r (Pear)"]) & selected[, "r (Pear)"] < rCutoff) &
-        (!is.na(selected[, "p (Pear)"]) & selected[, "p (Pear)"] < pValCutoff)
+    selected <- corsMat[, c("r (Pear)", "p (Pear)", 
+        "adj.Pear.Pval", "distCor")]
+    lShaped <- if (adj) {
+        (!is.na(selected[, "r (Pear)"]) & 
+        selected[, "r (Pear)"] < rCutoff) &
+        (!is.na(selected[, "adj.Pear.Pval"]) & 
+        selected[, "adj.Pear.Pval"] < pValCutoff)
+    } else {
+        (!is.na(selected[, "r (Pear)"]) & 
+        selected[, "r (Pear)"] < rCutoff) &
+        (!is.na(selected[, "p (Pear)"]) & 
+        selected[, "p (Pear)"] < pValCutoff)
     }
-  }
-  
-  # Combine results and label significant correlations
-  selected2 <- data.frame(selected, lShaped)
-  colnames(selected2) <- c(colnames(selected), "SigNegCorr")
-  return(selected2)
+    }
+
+    # Combine results and label significant correlations
+    selected2 <- data.frame(selected, lShaped)
+    colnames(selected2) <- c(colnames(selected), "SigNegCorr")
+    return(selected2)
 }

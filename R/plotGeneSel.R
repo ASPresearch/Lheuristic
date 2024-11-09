@@ -53,41 +53,46 @@
 #' plotGeneSel(mae, genePos = 7, titleText = "L-shaped gene")
 #'
 plotGeneSel <- function(mae, genePos, titleText, x1 = 1/3, 
-                        x2 = 2/3, y1 = NULL, y2 = NULL, percY1 = 1/3, 
-                        percY2 = 2/3, plotGrid = TRUE) {
-  xVec <- as.numeric(MultiAssayExperiment::assay(mae, "methylation")[genePos, ])
-  yVec <- as.numeric(MultiAssayExperiment::assay(mae, "expression")[genePos, ])
-  minExp <- min(yVec)
-  maxExp <- max(yVec)
-  delta <- maxExp - minExp
-  # Create a data frame for ggplot
-  Methylation <- xVec
-  Expression <- yVec
-  plotData <- data.frame(Methylation, Expression)
-  
-  # Set y1 and y2 based on percentiles if not provided
-  if (is.null(y1)) {
-    y1 <- minExp + percY1 * delta
-  }
-  if (is.null(y2)) {
-    y2 <- minExp + percY2 * delta
-  }
-  
-  # Base ggplot scatterplot
-  p <- ggplot2::ggplot(plotData, ggplot2::aes(x = Methylation, y = Expression)) +
+    x2 = 2/3, y1 = NULL, y2 = NULL, percY1 = 1/3, 
+    percY2 = 2/3, plotGrid = TRUE) {
+    xVec <- as.numeric(MultiAssayExperiment::assay(mae, 
+        "methylation")[genePos, ])
+    yVec <- as.numeric(MultiAssayExperiment::assay(mae, 
+        "expression")[genePos, ])
+    minExp <- min(yVec)
+    maxExp <- max(yVec)
+    delta <- maxExp - minExp
+    # Create a data frame for ggplot
+    Methylation <- xVec
+    Expression <- yVec
+    plotData <- data.frame(Methylation, Expression)
+
+    # Set y1 and y2 based on percentiles if not provided
+    if (is.null(y1)) {
+        y1 <- minExp + percY1 * delta
+    }
+    if (is.null(y2)) {
+        y2 <- minExp + percY2 * delta
+    }
+
+    # Base ggplot scatterplot
+    p <- ggplot2::ggplot(plotData, ggplot2::aes(x = Methylation, 
+    y = Expression)) +
     ggplot2::geom_point() +
     ggplot2::labs(title = titleText) +
     ggplot2::xlim(0, 1) +
     ggplot2::ylim(minExp, maxExp)
-  
-  # Add grid lines if plotGrid is TRUE
-  if (plotGrid) {
-    p <- p +
-      ggplot2::geom_vline(xintercept = c(x1, x2), linetype = "dashed", color = "gray") +
-      ggplot2::geom_hline(yintercept = c(y1, y2), linetype = "dashed", color = "gray") + 
-      ggplot2::theme_minimal()
-  }
-  
-  # Print the plot
-  print(p)
+
+    # Add grid lines if plotGrid is TRUE
+    if (plotGrid) {
+        p <- p +
+        ggplot2::geom_vline(xintercept = c(x1, x2), 
+        linetype = "dashed", color = "gray") +
+        ggplot2::geom_hline(yintercept = c(y1, y2), 
+        linetype = "dashed", color = "gray") + 
+        ggplot2::theme_minimal()
+    }
+
+    # Show the plot
+    p
 }

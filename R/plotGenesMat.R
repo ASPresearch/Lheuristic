@@ -71,49 +71,51 @@
 
 
 plotGenesMat <- function(mae, geneNames = NULL, fileName = NULL, 
-                         text4Title = NULL, x1 = 1/3,
-                         x2 = 2/3, y1 = NULL, y2 = NULL, percY1 = 1/3, 
-                         percY2 = 2/3, 
-                         plotGrid = TRUE,
-                         logicSc = NULL, saveToPDF = FALSE) {
-  
-  # Filter for selected gene names if provided
-  if (!is.null(geneNames)) {
-    mae <- mae[geneNames, , ]
-  }
-  
-  # Open PDF device if saveToPDF is TRUE and fileName is provided
-  if (saveToPDF && !is.null(fileName)) {
-    grDevices::pdf(fileName)
-  }
-  
-  # Set title text based on provided title or logic score
-  if (!is.null(text4Title)) {
-    text4Title <- paste(rownames(assay(mae, "expression")), text4Title, sep = ", ")
-  } else {
-    if (is.null(logicSc)) {
-      text4Title <- rownames(assay(mae, "expression"))
-    } else {
-      text4Title <- paste(rownames(assay(mae, "expression")), "\nL-shaped = ", 
-                          logicSc, sep = " ")
+    text4Title = NULL, x1 = 1/3,
+    x2 = 2/3, y1 = NULL, y2 = NULL, percY1 = 1/3, 
+    percY2 = 2/3, 
+    plotGrid = TRUE,
+    logicSc = NULL, saveToPDF = FALSE) {
+
+    # Filter for selected gene names if provided
+    if (!is.null(geneNames)) {
+        mae <- mae[geneNames, , ]
     }
-  }
-  
-  # Loop through each gene and plot
-  for (gene in seq_len(nrow(assay(mae, "expression")))) {
-    xVec <- as.numeric(assay(mae, "methylation")[gene, ])
-    yVec <- as.numeric(assay(mae, "expression")[gene, ])
-    plotGeneSel(
-      mae = mae,
-      genePos = gene,
-      titleText = text4Title[gene],
-      x1 = x1,
-      x2 = x2, percY1 = percY1, percY2 = percY2, plotGrid = plotGrid
-    )
-  }
-  
-  # Close PDF device if it was opened
-  if (saveToPDF && !is.null(fileName)) {
-    grDevices::dev.off()
-  }
+
+    # Open PDF device if saveToPDF is TRUE and fileName is provided
+    if (saveToPDF && !is.null(fileName)) {
+        grDevices::pdf(fileName)
+    }
+
+    # Set title text based on provided title or logic score
+    if (!is.null(text4Title)) {
+        text4Title <- paste(rownames(assay(mae, "expression")), text4Title, 
+        sep = ", ")
+    } else {
+        if (is.null(logicSc)) {
+        text4Title <- rownames(assay(mae, "expression"))
+    } else {
+        text4Title <- paste(rownames(assay(mae, 
+        "expression")), "\nL-shaped = ", 
+        logicSc, sep = " ")
+        }
+    }
+
+    # Loop through each gene and plot
+    for (gene in seq_len(nrow(assay(mae, "expression")))) {
+        xVec <- as.numeric(assay(mae, "methylation")[gene, ])
+        yVec <- as.numeric(assay(mae, "expression")[gene, ])
+        plotGeneSel(
+        mae = mae,
+        genePos = gene,
+        titleText = text4Title[gene],
+        x1 = x1,
+        x2 = x2, percY1 = percY1, percY2 = percY2, plotGrid = plotGrid
+        )
+    }
+
+    # Close PDF device if it was opened
+    if (saveToPDF && !is.null(fileName)) {
+        grDevices::dev.off()
+    }
 }

@@ -38,18 +38,18 @@
 #' matCorrs(mae)
 #'
 matCorrs <- function(mae) {
-  corrsList <- matrix(NA, nrow = nrow(assay(mae, "methylation")), ncol = 4)
-  colnames(corrsList) <- c("r (Sp)", "r (Pear)", "p (Sp)", "p (Pear)")
-  rownames(corrsList) <- rownames(assay(mae, "methylation"))
-  
-  for (i in seq_len(nrow(assay(mae, "methylation")))) {
-    xVec <- as.numeric(assay(mae, "methylation")[i, ])
-    yVec <- as.numeric(assay(mae, "expression")[i, ])
-    corrs <- vecCorrs(xVec, yVec)
-    corrsList[i, ] <- corrs
-  }
-  
-  return(corrsList)
+    corrsList <- matrix(NA, nrow = nrow(assay(mae, "methylation")), ncol = 4)
+    colnames(corrsList) <- c("r (Sp)", "r (Pear)", "p (Sp)", "p (Pear)")
+    rownames(corrsList) <- rownames(assay(mae, "methylation"))
+
+    for (i in seq_len(nrow(assay(mae, "methylation")))) {
+        xVec <- as.numeric(assay(mae, "methylation")[i, ])
+        yVec <- as.numeric(assay(mae, "expression")[i, ])
+        corrs <- vecCorrs(xVec, yVec)
+        corrsList[i, ] <- corrs
+    }
+
+    return(corrsList)
 }
 
 

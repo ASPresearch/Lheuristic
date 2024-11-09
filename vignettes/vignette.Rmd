@@ -5,7 +5,7 @@ date: "`r Sys.Date()`"
 output:
   rmarkdown::html_vignette: default
 vignette: > 
-  %\VignetteIndexEntry{L-shaped gene selection from expression and methylation data}
+  %\VignetteIndexEntry{L-gene selection from methylation and expression}
   %\VignetteEncoding{UTF-8}  
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
@@ -115,15 +115,18 @@ significant negative correlation between their expression and methylation
 values.
 
 ```{r}
-correlation <- correlationSelection(mae1, type = "Spearman",
+cl <- correlationSelection(mae1, type = "Spearman",
     pValCutoff = 0.25, rCutoff = -0.5, adj = TRUE)
 
-correlationL <- correlation[!is.na(correlation$SigNegCorr) & correlation$SigNegCorr, ]
-correlationNoL <- correlation[!is.na(correlation$SigNegCorr) & !correlation$SigNegCorr, ]
+correlationL <- cl[!is.na(cl$SigNegCorr) & 
+    cl$SigNegCorr, ]
+correlationNoL <- cl[!is.na(cl$SigNegCorr)& 
+    !cl$SigNegCorr, ]
 
 message(
-  "The number of genes selected with the correlation method is: ", sum(correlationL$SigNegCorr),
-  "\n"
+    "The number of genes selected 
+    with the correlation method is: ", sum(correlationL$SigNegCorr),
+    "\n"
 )
 ```
 
