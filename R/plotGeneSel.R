@@ -23,6 +23,7 @@
 #' @keywords plot gene selection
 #' @importFrom graphics abline
 #' @importFrom MultiAssayExperiment assay
+#' @import ggplot2
 #' @export plotGeneSel
 #'
 #' @examples
@@ -48,6 +49,7 @@
 #'     ),
 #'     colData = colDat
 #' )
+#' 
 #' plotGeneSel(mae, genePos = 7, titleText = "L-shaped gene")
 #'
 plotGeneSel <- function(mae, genePos, titleText, x1 = 1/3, 
@@ -58,18 +60,34 @@ plotGeneSel <- function(mae, genePos, titleText, x1 = 1/3,
   minExp <- min(yVec)
   maxExp <- max(yVec)
   delta <- maxExp - minExp
-  plot(xVec, yVec, xlim = c(0, 1), ylim = c(minExp, maxExp),
-       main = titleText)
-  if (plotGrid) {
-    if (is.null(y1)) {
-      y1 <- minExp + percY1 * delta
-    }
-    if (is.null(y2)) {
-      y2 <- minExp + percY2 * delta
-    }
-    graphics::abline(v = x1)
-    graphics::abline(v = x2)
-    graphics::abline(h = y1)
-    graphics::abline(h = y2)
+  # Create a data frame for ggplot
+  Methylation <- xVec
+  Expression <- yVec
+  plotData <- data.frame(Methylation, Expression)
+  
+  # Set y1 and y2 based on percentiles if not provided
+  if (is.null(y1)) {
+    y1 <- minExp + percY1 * delta
   }
+  if (is.null(y2)) {
+    y2 <- minExp + percY2 * delta
+  }
+  
+  # Base ggplot scatterplot
+  p <- ggplot2::ggplot(plotData, ggplot2::aes(x = Methylation, y = Expression)) +
+    ggplot2::geom_point() +
+    ggplot2::labs(title = titleText) +
+    ggplot2::xlim(0, 1) +
+    ggplot2::ylim(minExp, maxExp)
+  
+  # Add grid lines if plotGrid is TRUE
+  if (plotGrid) {
+    p <- p +
+      ggplot2::geom_vline(xintercept = c(x1, x2), linetype = "dashed", color = "gray") +
+      ggplot2::geom_hline(yintercept = c(y1, y2), linetype = "dashed", color = "gray") + 
+      ggplot2::theme_minimal()
+  }
+  
+  # Print the plot
+  print(p)
 }

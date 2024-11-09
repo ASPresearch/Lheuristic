@@ -42,16 +42,16 @@ Expected to contain methylation values ranging between 0 and 1,
 with default values set to 1/3 and 2/3.}
 
 \item{y1}{The y-coordinate of vertical points on the Y-axis.
-If NULL, these are set to the percentiles of `yVec` 
-defined by `percY1` and `percY2`.}
+If NULL, these are set to the percentiles of yVec 
+defined by percY1 and percY2.}
 
 \item{y2}{The y-coordinate of vertical points on the Y-axis.
-If NULL, these are set to the percentiles of `yVec` 
-defined by `percY1` and `percY2`.}
+If NULL, these are set to the percentiles of yVec 
+defined by percY1 and percY2.}
 
-\item{percY1}{Values used as defaults for `y1` when it is set to NULL.}
+\item{percY1}{Values used as defaults for y1 when it is set to NULL.}
 
-\item{percY2}{Values used as defaults for `y2` when it is set to NULL.}
+\item{percY2}{Values used as defaults for y2 when it is set to NULL.}
 
 \item{plotGrid}{A logical value; defaults to TRUE, indicating 
 whether to plot gridlines on the graph.}
@@ -59,8 +59,8 @@ whether to plot gridlines on the graph.}
 \item{logicSc}{A numeric score representing the L-shape score. 
 Defaults to NULL.}
 
-\item{saveToPDF}{Logical, if `TRUE`, saves the plots to a PDF file 
-specified by `fileName`. If `FALSE` (default), plots are displayed 
+\item{saveToPDF}{Logical, if TRUE, saves the plots to a PDF file 
+specified by fileName. If FALSE (default), plots are displayed 
 interactively without saving.}
 }
 \value{

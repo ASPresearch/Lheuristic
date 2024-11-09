@@ -22,6 +22,7 @@
 #' @importFrom grDevices pdf
 #' @importFrom grDevices dev.off
 #' @importFrom MultiAssayExperiment assay
+#' @import ggplot2
 #' @export plotGeneByName
 #'
 #' @examples
@@ -48,34 +49,36 @@
 #'     ),
 #'     colData = colDat
 #' )
-#' plotGeneByName(gene = "gene40", mae = mae)
+#' plotGeneByName(gene = "gene7", mae = mae)
 #'
 plotGeneByName <- function(geneName, mae, filename = NULL,
-                           text4Title = NULL,
-                           plotGrid = TRUE, figs = c(2, 2)) {
-  if (!is.null(filename)) {
+    text4Title = NULL,
+    plotGrid = TRUE, figs = c(2, 2)) {
+    # Open PDF if filename is provided
+    if (!is.null(filename)) {
     grDevices::pdf(filename)
-  }
-  if (!is.null(text4Title)) {
-    text4Title <- paste(geneName, text4Title, sep = ", ")
-  } else {
-    text4Title <- geneName
-  }
-  if (geneName %in% rownames(assay(mae, "expression"))) {
+    }
+  
+    # Set plot title   
+    plotTitle <- if (!is.null(text4Title)) paste(geneName, text4Title, 
+    sep = ", ") else geneName
+  
+    # Check if the gene name exists in the expression data 
+    #and get the gene position
+    if (geneName %in% rownames(assay(mae, "expression"))) {
     genePos <- which(rownames(assay(mae, "expression")) == geneName)
-  } else {
-    genePos <- NULL
-  }
-  if (!(is.null(genePos))) {
-    xVec <- as.numeric(assay(mae, "methylation")[genePos, ])
-    yVec <- as.numeric(assay(mae, "expression")[genePos, ])
+    } else {
+    stop("Gene not found in expression data.")
+    }
+  
+    # Plot using plotGeneSel with ggplot2
     plotGeneSel(
-      mae= mae, titleText = text4Title, 
-      x1 = 1/3, x2 = 2/3,
-      plotGrid = plotGrid
+    mae = mae, genePos = genePos, titleText = plotTitle,
+    x1 = 1/3, x2 = 2/3, plotGrid = plotGrid
     )
-  }
-  if (!is.null(filename)) {
+  
+    # Close PDF if filename is provided
+    if (!is.null(filename)) {
     grDevices::dev.off()
-  }
+    }
 }

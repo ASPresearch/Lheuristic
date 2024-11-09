@@ -160,13 +160,11 @@ empty displays the plot on screen). The figure below shows the first four
 selected genes.
 
 ```{r, fig.height=6, fig.width=6}
-genes2plot <- rownames(mae1[[2]]) %in% rownames(correlationL)[1:4]
-opt <- par(mfrow = c(2, 2))
-plotGenesMat(mae1,
+genes2plot <- rownames(correlationL)[1:4]
+
+plotGenesMat(mae1, geneNames = genes2plot,
     fileName = NULL, text4Title = correlationL[rownames(correlationL), ""]
 )
-
-par(opt)
 ```
 
 
@@ -297,11 +295,11 @@ on a PDF file.
 
 ```{r, fig.height=6, fig.width=6}
 genes2plot2 <- rownames(mae1[[2]]) %in% rownames(heurL)[1:4]
-opt <- par(mfrow = c(2, 2))
+
 plotGenesMat(mae1,
     fileName = NULL, text4Title = heurL[genes2plot2, "numeriSc"]
 )
-par(opt)
+
 ```
 
 

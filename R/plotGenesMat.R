@@ -15,23 +15,23 @@
 #' Expected to contain methylation values ranging between 0 and 1,
 #' with default values set to 1/3 and 2/3.
 #' @param y1 The y-coordinate of vertical points on the Y-axis.
-#' If NULL, these are set to the percentiles of `yVec` 
-#' defined by `percY1` and `percY2`.
-#' @param percY1 Values used as defaults for `y1` when it is set to NULL.
+#' If NULL, these are set to the percentiles of yVec 
+#' defined by percY1 and percY2.
+#' @param percY1 Values used as defaults for y1 when it is set to NULL.
 #' @param x2 The x-coordinate of vertical points on the X-axis.
 #' Expected to contain methylation values ranging between 0 and 1,
 #' with default values set to 1/3 and 2/3.
 #' @param y2 The y-coordinate of vertical points on the Y-axis.
-#' If NULL, these are set to the percentiles of `yVec` 
-#' defined by `percY1` and `percY2`.
-#' @param percY2 Values used as defaults for `y2` when it is set to NULL.
+#' If NULL, these are set to the percentiles of yVec 
+#' defined by percY1 and percY2.
+#' @param percY2 Values used as defaults for y2 when it is set to NULL.
 #' @param plotGrid A logical value; defaults to TRUE, indicating 
 #' whether to plot gridlines on the graph.
 #' @param logicSc A numeric score representing the L-shape score. 
 #' Defaults to NULL.
-#'@param saveToPDF Logical, if `TRUE`, saves the plots to a PDF file 
-#'specified by `fileName`. If `FALSE` (default), plots are displayed 
-#'interactively without saving.
+#' @param saveToPDF Logical, if TRUE, saves the plots to a PDF file 
+#' specified by fileName. If FALSE (default), plots are displayed 
+#' interactively without saving.
 #'
 #' @return a pdf with scatterplots for all genes
 #'
@@ -39,6 +39,7 @@
 #' @importFrom grDevices pdf
 #' @importFrom grDevices dev.off
 #' @importFrom MultiAssayExperiment assay
+#' @import ggplot2
 #' @export plotGenesMat
 #' @examples
 #' # Methylation data
@@ -67,49 +68,52 @@
 
 #' plotGenesMat(mae, geneNames = selectedGenes, saveToPDF = FALSE)
 #'
+
+
 plotGenesMat <- function(mae, geneNames = NULL, fileName = NULL, 
-    text4Title = NULL, x1 = 1/3,
-    x2 = 2/3, y1 = NULL, y2 = NULL, percY1 = 1/3, 
-    percY2 = 2/3, 
-    plotGrid = TRUE,
-    logicSc = NULL, saveToPDF = FALSE) {
+                         text4Title = NULL, x1 = 1/3,
+                         x2 = 2/3, y1 = NULL, y2 = NULL, percY1 = 1/3, 
+                         percY2 = 2/3, 
+                         plotGrid = TRUE,
+                         logicSc = NULL, saveToPDF = FALSE) {
   
-    if (!is.null(geneNames)) {
+  # Filter for selected gene names if provided
+  if (!is.null(geneNames)) {
     mae <- mae[geneNames, , ]
-    }
+  }
   
   # Open PDF device if saveToPDF is TRUE and fileName is provided
-    if (saveToPDF && !is.null(fileName)) {
+  if (saveToPDF && !is.null(fileName)) {
     grDevices::pdf(fileName)
   }
   
   # Set title text based on provided title or logic score
-    if (!is.null(text4Title)) {
-    text4Title <- paste(rownames(assay(mae, "expression")), text4Title, sep = ",")
-    } else {
+  if (!is.null(text4Title)) {
+    text4Title <- paste(rownames(assay(mae, "expression")), text4Title, sep = ", ")
+  } else {
     if (is.null(logicSc)) {
-    text4Title <- rownames(assay(mae, "expression"))
+      text4Title <- rownames(assay(mae, "expression"))
     } else {
-    text4Title <- paste(rownames(assay(mae, "expression")), "\n L-shaped = ", 
+      text4Title <- paste(rownames(assay(mae, "expression")), "\nL-shaped = ", 
                           logicSc, sep = " ")
     }
-    }
+  }
   
   # Loop through each gene and plot
-    for (gene in seq_len(nrow(assay(mae, "expression")))) {
+  for (gene in seq_len(nrow(assay(mae, "expression")))) {
     xVec <- as.numeric(assay(mae, "methylation")[gene, ])
     yVec <- as.numeric(assay(mae, "expression")[gene, ])
     plotGeneSel(
-        mae = mae,
-        genePos = gene,
-        titleText = text4Title[gene],
-        x1 = x1,
-        x2 = x2, percY1 = percY1, percY2 = percY2, plotGrid = plotGrid
+      mae = mae,
+      genePos = gene,
+      titleText = text4Title[gene],
+      x1 = x1,
+      x2 = x2, percY1 = percY1, percY2 = percY2, plotGrid = plotGrid
     )
-    }
+  }
   
   # Close PDF device if it was opened
-    if (saveToPDF && !is.null(fileName)) {
-        grDevices::dev.off()
-    }
+  if (saveToPDF && !is.null(fileName)) {
+    grDevices::dev.off()
+  }
 }

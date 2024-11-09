@@ -63,7 +63,7 @@ mae <- MultiAssayExperiment::MultiAssayExperiment(
     ),
     colData = colDat
 )
-plotGeneByName(gene = "gene40", mae = mae)
+plotGeneByName(gene = "gene7", mae = mae)
 
 }
 \keyword{gene}

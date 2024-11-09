@@ -23,7 +23,8 @@ Imports:
     grDevices,
     graphics,
     utils,
-    MultiAssayExperiment
+    MultiAssayExperiment,
+    ggplot2
 Suggests: 
     knitr,
     rmarkdown,

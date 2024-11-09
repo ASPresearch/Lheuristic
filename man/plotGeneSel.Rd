@@ -69,6 +69,7 @@ mae <- MultiAssayExperiment::MultiAssayExperiment(
     ),
     colData = colDat
 )
+
 plotGeneSel(mae, genePos = 7, titleText = "L-shaped gene")
 
 }
