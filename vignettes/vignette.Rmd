@@ -1,11 +1,11 @@
 ---
-title: "L-shaped gene selection from expression and methylation data"
+title: "L-shaped selection from expression and methylation data"
 author: "Berta Miro Cau and Alex Sánchez-Pla"
 date: "`r Sys.Date()`"
 output:
   rmarkdown::html_vignette: default
 vignette: > 
-  %\VignetteIndexEntry{L-gene selection from methylation and expression}
+  %\VignetteIndexEntry{L-shaped selection from methylation and expression}
   %\VignetteEncoding{UTF-8}  
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
@@ -13,7 +13,7 @@ editor_options:
 ---
 
 ```{r setup, include = FALSE}
-
+options(rmarkdown.html_vignette.check_title = FALSE)
 knitr::opts_chunk$set(
     collapse = TRUE,
     comment = "#>"
