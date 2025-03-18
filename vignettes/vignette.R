@@ -14,19 +14,19 @@ library(Lheuristic)
 data("TCGAexp")
 data("TCGAmet")
 
-## -----------------------------------------------------------------------------
-dim(TCGAexp)
-ifelse(checkPairing(TCGAexp, TCGAmet),
-    "Match OK", "Check matching"
-)
-
 ## ----warning=FALSE, message=FALSE---------------------------------------------
+
 library(MultiAssayExperiment)
-doubleExp <- list(
-    "methylation" = TCGAmet,
-    "expression" = TCGAexp
-)
-mae1 <- MultiAssayExperiment(experiments = doubleExp)
+
+colDat <- DataFrame(sampleID = colnames(TCGAmethylation))
+rownames(colDat) <- colDat$sampleID
+
+# Construct MultiAssayExperiment
+mae1 <- lhCreateMAE(xDat = TCGAmethylation, yDat = TCGAexpression,
+        xName = "methylation", yName = "expression", colData = colDat)
+
+# Display dataset names
+print(names(experiments(mae1)))
 
 ## -----------------------------------------------------------------------------
 cl <- correlationSelection(mae1, type = "Spearman",

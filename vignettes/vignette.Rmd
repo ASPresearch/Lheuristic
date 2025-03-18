@@ -62,37 +62,50 @@ library(Lheuristic)
 # library(kableExtra)
 # library(VennDiagram)
 
-data("TCGAexp")
-data("TCGAmet")
+data("TCGAexpression")
+data("TCGAmethylation")
 ```
 
-The package includes utility functions like `checkPairing`,  which verifies 
-that both matrices have matching row and column numbers and names.
+## Using `lhCreateMAE` based on `MultiAssayExperiment` as data container
 
-```{r}
-dim(TCGAexp)
-ifelse(checkPairing(TCGAexp, TCGAmet),
-    "Match OK", "Check matching"
-)
-```
+To effectively integrate and manage omics data,
+we utilize the `MultiAssayExperiment` data structure.
+This approach ensures consistency between datasets and 
+facilitates downstream analysis.
 
-## Using `MultiAssayExperiment` as data container
+The `lhCreateMAE` function constructs a MultiAssayExperiment
+object using two datasets—typically methylation and
+expression data—while enforcing consistency in sample
+and feature names. It ensures:
 
-We have two aligned datasets, therefore using an appropriate 
-data structure like `MultiAssayExperiment` is recommended, 
-as outlined in this tutorial.
+The datasets have matching row and column names.
 
-It is essential to label the experiments as "methylation" and 
-"expression" in this specific order for the `Lheuristic` package functions 
-to work correctly.
+Experiments are labeled appropriately
+(e.g., "methylation" and "expression").
+
+Sample metadata can be incorporated
+via the colData argument.
+
+The function includes an internal validation step,
+which verifies that both datasets are aligned correctly.
+If discrepancies exist in row or column names, the
+function will return an error, prompting users to
+correct inconsistencies before proceeding.
+
 
 ```{r, warning=FALSE, message=FALSE}
 library(MultiAssayExperiment)
-doubleExp <- list(
-    "methylation" = TCGAmet,
-    "expression" = TCGAexp
-)
-mae1 <- MultiAssayExperiment(experiments = doubleExp)
+
+colDat <- DataFrame(sampleID = colnames(TCGAmethylation))
+rownames(colDat) <- colDat$sampleID
+
+
+# Construct MultiAssayExperiment
+mae1 <- lhCreateMAE(xDat = TCGAmethylation, yDat = TCGAexpression,
+    xName = "methylation", yName = "expression", colData = colDat)
+
+# Display dataset names
+print(names(experiments(mae1)))
 ```
 
 # Data analysis
