@@ -176,10 +176,11 @@ empty displays the plot on screen). The figure below shows the first four
 selected genes.
 
 ```{r, fig.height=6, fig.width=6}
-genes2plot <- rownames(correlationL)[1:4]
+genes2plot <- rownames(correlationL)[1:3]
 
 plotGenesMat(mae1, geneNames = genes2plot,
-    fileName = NULL, text4Title = correlationL[rownames(correlationL), ""]
+    text4Title = correlationL[rownames(correlationL), ""],
+    saveToPDF = FALSE
 )
 ```
 

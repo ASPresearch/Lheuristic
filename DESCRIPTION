@@ -24,7 +24,8 @@ Imports:
     graphics,
     utils,
     MultiAssayExperiment,
-    ggplot2
+    ggplot2,
+    ggpubr
 Suggests: 
     knitr,
     rmarkdown,

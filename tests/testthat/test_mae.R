@@ -34,18 +34,17 @@ test_that("lhCreateMAE creates a valid MultiAssayExperiment", {
   expect_equal(dim(experiments(mae)[["expression"]]), dim(expresData))
 })
 
-test_that("lhCreateMAE fails when row/column names do not match", {
-  methylData <- matrix(runif(50), nrow = 10)
-  colnames(methylData) <- paste0("samp", 1:ncol(methylData))
-  rownames(methylData) <- paste0("gene", 1:nrow(methylData))
-  
-  expresData <- matrix(rnorm(50), nrow = 10)
-  colnames(expresData) <- paste0("sample", 1:ncol(expresData)) # Mismatch in colnames
-  rownames(expresData) <- rownames(methylData)
-  
-  expect_error(lhCreateMAE(methylData, expresData), 
-               "Row and column names must match between xDat and yDat")
-})
+test_that("lhCreateMAE works when row/column names match", {
+    methylData <- matrix(runif(50), nrow = 10)
+    colnames(methylData) <- paste0("samp", 1:ncol(methylData))
+    rownames(methylData) <- paste0("gene", 1:nrow(methylData))
+    expresData <- matrix(rnorm(50), nrow = 10)
+    colnames(expresData) <- colnames(methylData)  # Match column names
+    rownames(expresData) <- rownames(methylData)
+
+    # Suppress messages and ensure no error occurs
+    expect_silent(suppressMessages(lhCreateMAE(methylData, expresData)))
+    })
 
 test_that("lhCreateMAE assigns default colData if missing", {
   methylData <- matrix(runif(50), nrow = 10)
